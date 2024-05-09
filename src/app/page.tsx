@@ -7,6 +7,7 @@ import Link from "next/link";
 import main_logo from "@/assets/logo.svg";
 import Image from "next/image";
 import main_hero from "@/assets/main_hero.png";
+import main_hero_mob from "@/assets/main_hero_mob.svg";
 
 interface IPartiner {
   properties: {
@@ -107,7 +108,7 @@ export default function Home() {
             backgroundColor: "#F1F1F1",
           }}
         >
-          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 py-8 justify-center items-center relative">
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 py-8 justify-center items-center relative h-[33.5rem]">
             <div className="hidden lg:block" />
             <div className="w-full flex flex-col items-start justify-start gap-8">
               <a className="border border-[#e7e7e7] title-font font-medium items-center text-gray-900 hidden lg:flex">
@@ -121,16 +122,13 @@ export default function Home() {
                 Portal de Saúde para a Comunidade LGBT+
               </h1>
               <p className="leading-relaxed text-sm  text-center lg:text-left">
-                Este projeto é um site que vida atender às necessidades de saúde
-                da comunidade LGBT+. Nosso foco principal é oferecer uma lista
+                Somos um portal que visa conectar a comunidade LGBT+ a uma lista
                 de profissionais de saúde comprometidos em fornecer atendimento
-                de baixo custo e seguro para todos. Atuamos como uma plataforma
-                de conexão entre membros da comunidade e profissionais de saúde
-                que demonstram compreensão e sensibilidade em relação às
-                questões de diversidade sexual e de gênero. Ao acessar nosso
-                portal, você encontrará uma rede de apoio confiável e inclusiva,
-                onde suas necessidades de saúde serão tratadas com respeito e
-                cuidado.
+                de baixo custo e seguro para todos. <br />
+                <br /> Atuamos como uma plataforma de conexão entre membros da
+                comunidade e profissionais de saúde que demonstram compreensão e
+                sensibilidade em relação às questões de diversidade sexual e de
+                gênero.
               </p>
               <img
                 className="object-cover object-center rounded block lg:hidden"
@@ -140,8 +138,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="block lg:hidden">
-          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 py-8 justify-center items-center relative">
+        <div className="block lg:hidden bg-[#F1F1F1]">
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 pt-8 justify-center items-center relative">
             <div className="hidden lg:block" />
             <div className="w-full flex flex-col items-start justify-start gap-8">
               <a className="border border-[#e7e7e7] title-font font-medium items-center text-gray-900 hidden lg:flex">
@@ -155,22 +153,15 @@ export default function Home() {
                 Portal de Saúde para a Comunidade LGBT+
               </h1>
               <p className="leading-relaxed text-sm  text-center lg:text-left">
-                Este projeto é um site que vida atender às necessidades de saúde
-                da comunidade LGBT+. Nosso foco principal é oferecer uma lista
+                Somos um portal que visa conectar a comunidade LGBT+ a uma lista
                 de profissionais de saúde comprometidos em fornecer atendimento
-                de baixo custo e seguro para todos. Atuamos como uma plataforma
-                de conexão entre membros da comunidade e profissionais de saúde
-                que demonstram compreensão e sensibilidade em relação às
-                questões de diversidade sexual e de gênero. Ao acessar nosso
-                portal, você encontrará uma rede de apoio confiável e inclusiva,
-                onde suas necessidades de saúde serão tratadas com respeito e
-                cuidado.
+                de baixo custo e seguro para todos. <br /> <br />
+                Atuamos como uma plataforma de conexão entre membros da
+                comunidade e profissionais de saúde que demonstram compreensão e
+                sensibilidade em relação às questões de diversidade sexual e de
+                gênero.
               </p>
-              <img
-                className="object-cover object-center rounded block lg:hidden"
-                alt="hero"
-                src="https://dummyimage.com/720x600"
-              />
+              <Image alt="" src={main_hero_mob} className="w-full" />
             </div>
           </div>
         </div>
@@ -183,11 +174,12 @@ export default function Home() {
               Time completo
             </h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-sm">
-              Priorizamos a segurança e a confidencialidade dos nossos usuários.
-              Todos os profissionais listados em nossa plataforma passam por
-              rigorosos processos de verificação e aderem a padrões éticos
-              elevados, garantindo um ambiente seguro e acolhedor para o
-              crescimento pessoal e emocional.
+              Somos um portal que visa conectar a comunidade LGBT+ a uma lista
+              de profissionais de saúde comprometidos em fornecer atendimento de
+              baixo custo e seguro para todos. <br /> Atuamos como uma
+              plataforma de conexão entre membros da comunidade e profissionais
+              de saúde que demonstram compreensão e sensibilidade em relação às
+              questões de diversidade sexual e de gênero.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
