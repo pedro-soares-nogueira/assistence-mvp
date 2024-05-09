@@ -1,4 +1,75 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { FacebookLogo, InstagramLogo, WhatsappLogo } from "phosphor-react";
+import Link from "next/link";
+
+interface IPartiner {
+  properties: {
+    Name: { id: string; type: string; title: { plain_text: string }[] };
+    Avatar: {
+      id: string;
+      type: string;
+      files: {
+        name: string;
+        type: string;
+        file: {
+          url: string;
+          expiry_time: string;
+        };
+      }[];
+    };
+    Details: {
+      id: string;
+      type: string;
+      rich_text: {
+        plain_text: string;
+      }[];
+    };
+    Facebook: { id: string; type: string; url: string };
+    Instagram: { id: string; type: string; url: string };
+    Whatsapp: { id: string; type: string; url: string };
+    Specialty: {
+      id: string;
+      type: string;
+      select: {
+        id: string;
+        name: string;
+        color: string;
+      };
+    };
+    Tags: {
+      id: string;
+      type: string;
+      multi_select: {
+        id: string;
+        name: string;
+        color: string;
+      }[];
+    };
+  };
+}
+
 export default function Home() {
+  const [partners, setPartners] = useState<IPartiner[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/get-partners")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao obter os partners.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setPartners(data.partners);
+      })
+      .catch((error) => {
+        console.error("Erro ao obter os partners:", error);
+      });
+  }, []);
+
   return (
     <main className="">
       <header className="text-gray-600 body-font">
@@ -77,37 +148,32 @@ export default function Home() {
               crescimento pessoal e emocional.
             </p>
           </div>
-          <div className="flex flex-wrap -m-2">
-            <div className="p-2 lg:w-1/3 md:w-1/2 w-full">
-              <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-                <img
-                  alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/80x80"
-                />
-                <div className="flex-grow">
-                  <h2 className="text-gray-900 title-font font-medium">
-                    Holden Caulfield
-                  </h2>
-                  <p className="text-gray-500">UI Designer</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-2 lg:w-1/3 md:w-1/2 w-full">
-              <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-                <img
-                  alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/84x84"
-                />
-                <div className="flex-grow">
-                  <h2 className="text-gray-900 title-font font-medium">
-                    Henry Letham
-                  </h2>
-                  <p className="text-gray-500">CTO</p>
-                </div>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {partners &&
+              partners.map((partner, index) => {
+                return (
+                  <div key={index} className="w-full">
+                    <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg">
+                      <div className="flex items-center">
+                        <img
+                          alt="team"
+                          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                          src={partner.properties.Avatar.files[0].file.url}
+                        />
+                        <div className="flex-grow">
+                          <h2 className="text-gray-900 title-font font-medium">
+                            {partner.properties.Name.title[0].plain_text}
+                          </h2>
+                          <p className={`text-gray-500 text-sm`}>
+                            {partner.properties.Specialty.select.name}
+                          </p>
+                        </div>
+                      </div>
+                      <PartnerModal {...partner} />
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </section>
@@ -119,9 +185,9 @@ export default function Home() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               className="w-10 h-10 text-white p-2 bg-gray-500 rounded-full"
               viewBox="0 0 24 24"
             >
@@ -144,9 +210,9 @@ export default function Home() {
             <a className="text-gray-500">
               <svg
                 fill="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 className="w-5 h-5"
                 viewBox="0 0 24 24"
               >
@@ -156,9 +222,9 @@ export default function Home() {
             <a className="ml-3 text-gray-500">
               <svg
                 fill="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 className="w-5 h-5"
                 viewBox="0 0 24 24"
               >
@@ -169,9 +235,9 @@ export default function Home() {
               <svg
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 className="w-5 h-5"
                 viewBox="0 0 24 24"
               >
@@ -183,9 +249,9 @@ export default function Home() {
               <svg
                 fill="currentColor"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="0"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="0"
                 className="w-5 h-5"
                 viewBox="0 0 24 24"
               >
@@ -202,3 +268,99 @@ export default function Home() {
     </main>
   );
 }
+
+const PartnerModal = ({ properties }: IPartiner) => {
+  console.log(properties);
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <button className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed w-screen h-screen inset-0 bg-black opacity-80" />
+        <Dialog.Content
+          className="bg-white rounded-md max-w-sm md:max-w-3xl w-full p-4"
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <div className="flex items-start justify-between border-b border-gray-200 pb-2">
+            <Dialog.Title>Detalhes do profissinal</Dialog.Title>
+            <Dialog.Close>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 text-gray-500"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </Dialog.Close>
+          </div>
+
+          <div className="mt-7 flex flex-col md:flex-row items-start gap-8">
+            <div className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full text-center"></div>
+
+            <div className="space-y-3 max-w-[32rem]">
+              <div className="flex flex-col md:flex-row items-start justify-between gap-y-2">
+                <p className="text-gray-900 text-xl font-bold">
+                  {properties.Name.title[0].plain_text}
+                </p>
+
+                <div className="flex items-start gap-2">
+                  <Link href={properties.Facebook.url}>
+                    <FacebookLogo size={22} className="text-gray-500" />
+                  </Link>
+                  <Link href={properties.Instagram.url}>
+                    <InstagramLogo size={22} className="text-gray-500" />
+                  </Link>
+                  <Link href={properties.Whatsapp.url}>
+                    <WhatsappLogo size={22} className="text-gray-500" />
+                  </Link>
+                </div>
+              </div>
+              <p className="text-gray-500 text-sm">
+                {properties.Details.rich_text[0].plain_text}
+              </p>
+
+              <div className="flex items-start gap-2 !my-6">
+                {properties.Tags.multi_select.map((item) => {
+                  return (
+                    <p className="text-gray-900 rounded-sm text-xs bg-red-200 py-1 px-2">
+                      {item.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
