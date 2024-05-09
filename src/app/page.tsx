@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { FacebookLogo, InstagramLogo, WhatsappLogo } from "phosphor-react";
 import Link from "next/link";
+import main_logo from "@/assets/logo.svg";
+import Image from "next/image";
+import main_hero from "@/assets/main_hero.png";
 
 interface IPartiner {
   properties: {
@@ -73,69 +76,108 @@ export default function Home() {
   return (
     <main className="">
       <header className="text-gray-600 body-font">
-        <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-          <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="w-10 h-10 text-white p-2 bg-gray-500 rounded-full"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-            <span className="ml-3 text-xl">Assistence</span>
+        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <a className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900">
+            <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
           </a>
-          <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
+
+          <nav className="flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
             <a className="hover:text-gray-900">Quem somos</a>
             <a className="hover:text-gray-900">Profissionais</a>
           </nav>
+
+          <button className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none">
+            <span className="flex items-start flex-col leading-none">
+              <span className="text-xs text-gray-800">
+                Sou profissional e quero participar
+              </span>
+            </span>
+          </button>
         </div>
       </header>
 
       <section className="text-gray-600 body-font">
-        <div className="container mx-auto flex flex-col px-5 py-8 justify-center items-center">
-          <img
-            className="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded"
-            alt="hero"
-            src="https://dummyimage.com/720x600"
-          />
-          <div className="w-full md:w-2/3 flex flex-col mb-16 items-center text-center">
-            <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-              Assistencia psicológica á sua disposição!
-            </h1>
-            <p className="mb-8 leading-relaxed text-sm">
-              Nosso aplicativo é uma ferramenta inovadora que visa fornecer
-              assistência psicológica acessível para pessoas LGBTQIAP+. Com uma
-              seleção cuidadosamente curada de profissionais especializados e
-              sensíveis às necessidades dessa comunidade, oferecemos serviços de
-              suporte emocional a preços acessíveis. Reconhecemos a importância
-              de um ambiente seguro e inclusivo para a saúde mental de todos, e
-              estamos comprometidos em fornecer um espaço acolhedor onde os
-              indivíduos possam encontrar apoio e compreensão sem se preocupar
-              com custos proibitivos.
-            </p>
-            <div className="flex">
-              <button className="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
-                <span className="flex items-start flex-col leading-none">
-                  <span className="text-xs text-gray-600 mb-1">
-                    Baixo custo
-                  </span>
-                  <span className="title-font font-medium">
-                    Asistencia Psicológica
-                  </span>
-                </span>
-              </button>
+        <div
+          className="hidden lg:block"
+          style={{
+            backgroundImage: `url('${main_hero.src}')`,
+            backgroundRepeat: "no-repeat",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#F1F1F1",
+          }}
+        >
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 py-8 justify-center items-center relative">
+            <div className="hidden lg:block" />
+            <div className="w-full flex flex-col items-start justify-start gap-8">
+              <a className="border border-[#e7e7e7] title-font font-medium items-center text-gray-900 hidden lg:flex">
+                <Image
+                  alt=""
+                  src={main_logo}
+                  className="max-w-[145px] w-full"
+                />
+              </a>
+              <h1 className="title-font sm:text-4xl text-3xl font-bold text-gray-900 text-center lg:text-left">
+                Portal de Saúde para a Comunidade LGBT+
+              </h1>
+              <p className="leading-relaxed text-sm  text-center lg:text-left">
+                Este projeto é um site que vida atender às necessidades de saúde
+                da comunidade LGBT+. Nosso foco principal é oferecer uma lista
+                de profissionais de saúde comprometidos em fornecer atendimento
+                de baixo custo e seguro para todos. Atuamos como uma plataforma
+                de conexão entre membros da comunidade e profissionais de saúde
+                que demonstram compreensão e sensibilidade em relação às
+                questões de diversidade sexual e de gênero. Ao acessar nosso
+                portal, você encontrará uma rede de apoio confiável e inclusiva,
+                onde suas necessidades de saúde serão tratadas com respeito e
+                cuidado.
+              </p>
+              <img
+                className="object-cover object-center rounded block lg:hidden"
+                alt="hero"
+                src="https://dummyimage.com/720x600"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="block lg:hidden">
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 py-8 justify-center items-center relative">
+            <div className="hidden lg:block" />
+            <div className="w-full flex flex-col items-start justify-start gap-8">
+              <a className="border border-[#e7e7e7] title-font font-medium items-center text-gray-900 hidden lg:flex">
+                <Image
+                  alt=""
+                  src={main_logo}
+                  className="max-w-[145px] w-full"
+                />
+              </a>
+              <h1 className="title-font sm:text-4xl text-3xl font-bold text-gray-900 text-center lg:text-left">
+                Portal de Saúde para a Comunidade LGBT+
+              </h1>
+              <p className="leading-relaxed text-sm  text-center lg:text-left">
+                Este projeto é um site que vida atender às necessidades de saúde
+                da comunidade LGBT+. Nosso foco principal é oferecer uma lista
+                de profissionais de saúde comprometidos em fornecer atendimento
+                de baixo custo e seguro para todos. Atuamos como uma plataforma
+                de conexão entre membros da comunidade e profissionais de saúde
+                que demonstram compreensão e sensibilidade em relação às
+                questões de diversidade sexual e de gênero. Ao acessar nosso
+                portal, você encontrará uma rede de apoio confiável e inclusiva,
+                onde suas necessidades de saúde serão tratadas com respeito e
+                cuidado.
+              </p>
+              <img
+                className="object-cover object-center rounded block lg:hidden"
+                alt="hero"
+                src="https://dummyimage.com/720x600"
+              />
             </div>
           </div>
         </div>
       </section>
 
       <section className="text-gray-600 body-font">
-        <div className="container px-5 mx-auto">
+        <div className="container px-5 mx-auto mt-20">
           <div className="flex flex-col text-center w-full mb-20">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
               Time completo
