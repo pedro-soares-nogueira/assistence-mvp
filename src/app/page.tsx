@@ -55,7 +55,7 @@ export default function Home() {
   const [partners, setPartners] = useState<IPartiner[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/get-partners")
+    fetch("api/get-partners")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Erro ao obter os partners.");
