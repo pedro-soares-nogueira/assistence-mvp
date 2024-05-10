@@ -306,15 +306,21 @@ const PartnerModal = ({ properties }: IPartiner) => {
                 </p>
 
                 <div className="flex items-start gap-2">
-                  <Link href={properties.Facebook.url}>
-                    <FacebookLogo size={22} className="text-gray-500" />
-                  </Link>
-                  <Link href={properties.Instagram.url}>
-                    <InstagramLogo size={22} className="text-gray-500" />
-                  </Link>
-                  <Link href={properties.Whatsapp.url}>
-                    <WhatsappLogo size={22} className="text-gray-500" />
-                  </Link>
+                  {properties.Facebook.url && (
+                    <Link href={properties.Facebook.url}>
+                      <FacebookLogo size={22} className="text-gray-500" />
+                    </Link>
+                  )}
+                  {properties.Instagram.url && (
+                    <Link href={properties.Instagram.url}>
+                      <InstagramLogo size={22} className="text-gray-500" />
+                    </Link>
+                  )}
+                  {properties.Whatsapp.url && (
+                    <Link href={properties.Whatsapp.url}>
+                      <WhatsappLogo size={22} className="text-gray-500" />
+                    </Link>
+                  )}
                 </div>
               </div>
               <p className="text-gray-500 text-sm">
