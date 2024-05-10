@@ -82,18 +82,23 @@ export default function Home() {
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
           </a>
 
-          <nav className="flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
+          {/* <nav className="flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
             <a className="hover:text-gray-900">Quem somos</a>
             <a className="hover:text-gray-900">Profissionais</a>
-          </nav>
+          </nav> */}
 
-          <button className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none">
+          <Link
+            href={
+              "https://wa.me/5518997153884?text=Ol%C3%A1%2C+venho+do+Pride+care+e+gostaria+de+me+cadastrar+como+profissional%2C+pode+me+ajudar%3F"
+            }
+            className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none"
+          >
             <span className="flex items-start flex-col leading-none">
               <span className="text-xs text-gray-800">
                 Sou profissional e quero participar
               </span>
             </span>
-          </button>
+          </Link>
         </div>
       </header>
 
