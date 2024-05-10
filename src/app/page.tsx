@@ -157,7 +157,7 @@ export default function Home() {
                 sensibilidade em relação às questões de diversidade sexual e de
                 gênero.
               </p>
-              <div>
+              <div className="h-[405px] object-cover">
                 <Image alt="" src={main_hero_mob} className="w-full" />
               </div>
             </div>
