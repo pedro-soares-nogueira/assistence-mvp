@@ -290,8 +290,6 @@ export default function Home() {
 }
 
 const PartnerModal = ({ properties }: IPartiner) => {
-  console.log(properties);
-
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -375,7 +373,10 @@ const PartnerModal = ({ properties }: IPartiner) => {
               <div className="flex items-start gap-2 !my-6">
                 {properties.Tags.multi_select.map((item) => {
                   return (
-                    <p className="text-gray-900 rounded-sm text-xs bg-red-200 py-1 px-2">
+                    <p
+                      key={item.id}
+                      className="text-gray-900 rounded-sm text-xs bg-red-200 py-1 px-2"
+                    >
                       {item.name}
                     </p>
                   );
