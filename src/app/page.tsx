@@ -89,7 +89,7 @@ export default function Home() {
 
           <Link
             href={
-              "https://wa.me/5518997153884?text=Ol%C3%A1%2C+venho+do+Pride+care+e+gostaria+de+me+cadastrar+como+profissional%2C+pode+me+ajudar%3F"
+              "https://docs.google.com/forms/d/1H0UZ0pxYTb8-lLlQYBpRG8MqVmuHDQRX03lxqcXAtIE/prefill"
             }
             className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none"
           >
@@ -136,11 +136,6 @@ export default function Home() {
                 sensibilidade em relação às questões de diversidade sexual e de
                 gênero.
               </p>
-              <img
-                className="object-cover object-center rounded block lg:hidden"
-                alt="hero"
-                src="https://dummyimage.com/720x600"
-              />
             </div>
           </div>
         </div>
