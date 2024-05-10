@@ -332,7 +332,7 @@ const PartnerModal = ({ properties }: IPartiner) => {
                 {properties.Details.rich_text[0].plain_text}
               </p>
 
-              <div className="flex items-start gap-2 !my-6">
+              <div className="flex flex-wrap items-start gap-2 !my-6">
                 {properties.Tags.multi_select.map((item) => {
                   return (
                     <p
