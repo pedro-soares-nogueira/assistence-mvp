@@ -16,6 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="icon"
+          href="../assets/favicon.png"
+          type="image/<generated>"
+          sizes="<generated>"
+        />
+      </head>
+
       <body className={mont.className}>{children}</body>
     </html>
   );
