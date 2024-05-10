@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { FacebookLogo, InstagramLogo, WhatsappLogo } from "phosphor-react";
+import {
+  ArrowDown,
+  FacebookLogo,
+  InstagramLogo,
+  WhatsappLogo,
+} from "phosphor-react";
 import Link from "next/link";
 import main_logo from "@/assets/logo.svg";
 import Image from "next/image";
@@ -52,6 +57,14 @@ interface IPartiner {
         color: string;
       }[];
     };
+    Valor_social: {
+      id: string;
+      checkbox: boolean;
+    };
+    Gratuitas: {
+      id: string;
+      checkbox: boolean;
+    };
   };
 }
 
@@ -68,6 +81,7 @@ export default function Home() {
       })
       .then((data) => {
         setPartners(data.partners);
+        console.log(data.partners);
       })
       .catch((error) => {
         console.error("Erro ao obter os partners:", error);
@@ -88,9 +102,7 @@ export default function Home() {
           </nav> */}
 
           <Link
-            href={
-              "https://docs.google.com/forms/d/1H0UZ0pxYTb8-lLlQYBpRG8MqVmuHDQRX03lxqcXAtIE/prefill"
-            }
+            href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
             className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none"
           >
             <span className="flex items-start flex-col leading-none">
@@ -180,12 +192,12 @@ export default function Home() {
               direção ao cuidado que você merece.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {partners &&
               partners.map((partner, index) => {
                 return (
                   <div key={index} className="w-full">
-                    <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg">
+                    <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
                       <div className="flex items-center">
                         <img
                           alt="team"
@@ -199,6 +211,20 @@ export default function Home() {
                           <p className={`text-gray-500 text-sm`}>
                             {partner.properties.Specialty.select.name}
                           </p>
+
+                          <div className="flex md:flex-col md:items-start items-center justify-start mt-2 gap-2">
+                            {partner.properties.Gratuitas.checkbox && (
+                              <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+                                Vagas gratuitas
+                              </span>
+                            )}
+
+                            {partner.properties.Valor_social?.checkbox && (
+                              <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+                                Valor social
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <PartnerModal {...partner} />
@@ -338,6 +364,38 @@ const PartnerModal = ({ properties }: IPartiner) => {
                     </p>
                   );
                 })}
+
+                <div className="flex items-center justify-start gap-2">
+                  {properties.Gratuitas.checkbox && (
+                    <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+                      Vagas gratuitas
+                    </span>
+                  )}
+
+                  {properties.Valor_social?.checkbox && (
+                    <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+                      Valor social
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-gray-700 text-[13px] blok mt-6">
+                  Direto com o profissional você tem mais informações sobre os
+                  atendimentos{" "}
+                  <ArrowDown
+                    size={14}
+                    className="inline-flex text-gray-700 ml-2"
+                  />
+                </p>
+
+                {properties.Whatsapp.url && (
+                  <Link
+                    href={properties.Whatsapp.url}
+                    className="bg-green-700 rounded-md px-4 py-2 text-white font-bold mt-2"
+                  >
+                    Entrar em contato pelo whatsapp
+                  </Link>
+                )}
               </div>
             </div>
           </div>
