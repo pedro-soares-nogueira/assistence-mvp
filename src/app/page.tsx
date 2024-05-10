@@ -98,6 +98,7 @@ export default function Home() {
       </header>
 
       <section className="text-gray-600 body-font">
+        {/* Desktop */}
         <div
           className="hidden lg:block"
           style={{
@@ -138,17 +139,12 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Mobile */}
         <div className="block lg:hidden bg-[#F1F1F1]">
           <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-5 pt-8 justify-center items-center relative">
             <div className="hidden lg:block" />
             <div className="w-full flex flex-col items-start justify-start gap-8">
-              <a className="border border-[#e7e7e7] title-font font-medium items-center text-gray-900 hidden lg:flex">
-                <Image
-                  alt=""
-                  src={main_logo}
-                  className="max-w-[145px] w-full"
-                />
-              </a>
               <h1 className="title-font sm:text-4xl text-3xl font-bold text-gray-900 text-center lg:text-left">
                 Portal de Saúde para a Comunidade LGBT+
               </h1>
@@ -161,7 +157,9 @@ export default function Home() {
                 sensibilidade em relação às questões de diversidade sexual e de
                 gênero.
               </p>
-              <Image alt="" src={main_hero_mob} className="w-full" />
+              <div>
+                <Image alt="" src={main_hero_mob} className="w-full" />
+              </div>
             </div>
           </div>
         </div>
@@ -170,16 +168,16 @@ export default function Home() {
       <section className="text-gray-600 body-font">
         <div className="container px-5 mx-auto mt-20">
           <div className="flex flex-col text-center w-full mb-20">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
-              Time completo
+            <h1 className="sm:text-3xl text-2xl font-bold title-font mb-4 text-gray-900">
+              Time de parceiros
             </h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-sm">
-              Somos um portal que visa conectar a comunidade LGBT+ a uma lista
-              de profissionais de saúde comprometidos em fornecer atendimento de
-              baixo custo e seguro para todos. <br /> Atuamos como uma
-              plataforma de conexão entre membros da comunidade e profissionais
-              de saúde que demonstram compreensão e sensibilidade em relação às
-              questões de diversidade sexual e de gênero.
+              Escolha o profissional de saúde que melhor atenda às suas
+              necessidades. Depois, entre em contato diretamente pelo WhatsApp
+              ou redes sociais listadas em seus perfis. <br />
+              Estamos aqui para facilitar sua busca por cuidados de saúde
+              acessíveis e seguros. Não hesite em dar o primeiro passo em
+              direção ao cuidado que você merece.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
