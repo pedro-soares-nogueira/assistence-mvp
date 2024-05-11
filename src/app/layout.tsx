@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
 
         {/* GTM */}
@@ -32,7 +32,7 @@ export default function RootLayout({
               `,
           }}
         />
-      </Head>
+      </head>
 
       <body className={mont.className}>
         {/* GTM */}
