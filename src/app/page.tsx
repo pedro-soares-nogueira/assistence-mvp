@@ -126,7 +126,7 @@ export default function Home() {
       <header className="text-gray-600 body-font">
         <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link
-            href={"https://www.pridecare.pro/"}
+            href={"/"}
             className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
           >
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
@@ -328,8 +328,8 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      <PartnerModal {...partner} />
-                      {/* <Link
+                      {/* <PartnerModal {...partner} /> */}
+                      <Link
                         href={`/partners/${slugToPartnerPage}`}
                         className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all"
                       >
@@ -347,7 +347,7 @@ export default function Home() {
                             d="m8.25 4.5 7.5 7.5-7.5 7.5"
                           />
                         </svg>
-                      </Link> */}
+                      </Link>
                     </div>
                   </div>
                 );
@@ -359,7 +359,7 @@ export default function Home() {
       <footer className="text-gray-600 body-font">
         <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
           <Link
-            href={"https://www.pridecare.pro/"}
+            href={"/"}
             className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
           >
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />

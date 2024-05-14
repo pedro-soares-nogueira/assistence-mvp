@@ -10,6 +10,7 @@ import {
   InstagramLogo,
   WhatsappLogo,
   Image as PImage,
+  ArrowFatLeft,
 } from "phosphor-react";
 import { BounceLoader } from "react-spinners";
 
@@ -46,7 +47,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
       <header className="text-gray-600 body-font">
         <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link
-            href={"https://www.pridecare.pro/"}
+            href={"/"}
             className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
           >
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
@@ -77,8 +78,11 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
       )}
 
       {partnerToShow !== undefined && (
-        <main className="container mx-auto px-4 mt-3">
-          <strong>Detalhes do profissinal</strong>
+        <main className="container mx-auto px-4 mt-3 h-[90vh]">
+          <Link href={"/"} className="flex gap-3 text-base">
+            <ArrowFatLeft size={22} />
+            Voltar
+          </Link>
 
           <div className="mt-7 flex flex-col md:flex-row items-start gap-8">
             {/* properties.Avatar.files.length !== 0 && (
@@ -88,15 +92,16 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                 src={properties.Avatar.files[0].file.url}
               />
             ) */}
-            <div className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4 flex items-center justify-center">
-              <PImage size={28} className="text-gray-500" />
-            </div>
 
             <div className="space-y-3 max-w-[32rem]">
               <div className="flex flex-col md:flex-row items-start justify-between gap-y-2">
                 <p className="text-gray-900 text-xl font-bold">
                   {partnerToShow?.properties.Name.title[0].plain_text}
                 </p>
+
+                <div className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4 flex items-center justify-center my-7">
+                  <PImage size={28} className="text-gray-500" />
+                </div>
 
                 <div className="flex items-start gap-2">
                   {partnerToShow?.properties.Facebook.url && (
@@ -164,6 +169,33 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
           </div>
         </main>
       )}
+
+      <footer className="text-gray-600 body-font">
+        <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+          <Link
+            href={"/"}
+            className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
+          >
+            <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
+          </Link>
+          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+            © 2024 PrideCare —
+            <Link
+              href={"https://www.instagram.com/pridecare.pro/"}
+              className="text-gray-600 ml-1"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              @prideCare
+            </Link>
+          </p>
+          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start space-x-3">
+            <Link href={"https://www.instagram.com/pridecare.pro/"}>
+              <InstagramLogo size={26} className="text-gray-500" />
+            </Link>
+          </span>
+        </div>
+      </footer>
     </div>
   );
 };
