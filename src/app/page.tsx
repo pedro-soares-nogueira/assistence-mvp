@@ -7,12 +7,14 @@ import {
   FacebookLogo,
   InstagramLogo,
   WhatsappLogo,
+  Image as PImage,
 } from "phosphor-react";
 import Link from "next/link";
 import main_logo from "@/assets/logo.svg";
 import Image from "next/image";
 import main_hero from "@/assets/main_hero.png";
 import main_hero_mob from "@/assets/main_hero_mob.svg";
+import { BounceLoader } from "react-spinners";
 
 interface IPartiner {
   properties: {
@@ -69,6 +71,7 @@ interface IPartiner {
 }
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartiner[]>([]);
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function Home() {
       })
       .then((data) => {
         setPartners(data.partners);
-        console.log(data.partners);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Erro ao obter os partners:", error);
@@ -92,9 +95,12 @@ export default function Home() {
     <main className="">
       <header className="text-gray-600 body-font">
         <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <a className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900">
+          <Link
+            href={"https://www.pridecare.pro/"}
+            className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
+          >
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
-          </a>
+          </Link>
 
           {/* <nav className="flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
             <a className="hover:text-gray-900">Quem somos</a>
@@ -192,18 +198,33 @@ export default function Home() {
               direção ao cuidado que você merece.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+          <BounceLoader
+            size={150}
+            loading={isLoading}
+            className="mx-auto mb-14"
+            color="#e9d5ff"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {partners &&
               partners.map((partner, index) => {
                 return (
                   <div key={index} className="w-full">
                     <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
                       <div className="flex items-center">
-                        <img
-                          alt="team"
-                          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                          src={partner.properties.Avatar.files[0].file.url}
-                        />
+                        {partner.properties.Avatar.files.length !== 0 && (
+                          <img
+                            alt="team"
+                            className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                            src={partner.properties.Avatar.files[0].file.url}
+                          />
+                        )}
+                        {partner.properties.Avatar.files.length === 0 && (
+                          <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                            <PImage size={22} />
+                          </div>
+                        )}
                         <div className="flex-grow">
                           <h2 className="text-gray-900 title-font font-medium">
                             {partner.properties.Name.title[0].plain_text}
@@ -238,26 +259,26 @@ export default function Home() {
 
       <footer className="text-gray-600 body-font">
         <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-          <a className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900">
+          <Link
+            href={"https://www.pridecare.pro/"}
+            className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
+          >
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
-          </a>
+          </Link>
           <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
             © 2024 PrideCare —
-            <a
-              href="https://twitter.com/knyttneve"
+            <Link
+              href={"https://www.instagram.com/pridecare.pro/"}
               className="text-gray-600 ml-1"
               rel="noopener noreferrer"
               target="_blank"
             >
               @prideCare
-            </a>
+            </Link>
           </p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start space-x-3">
-            <Link href={""}>
+            <Link href={"https://www.instagram.com/pridecare.pro/"}>
               <InstagramLogo size={26} className="text-gray-500" />
-            </Link>
-            <Link href={""}>
-              <WhatsappLogo size={26} className="text-gray-500" />
             </Link>
           </span>
         </div>
@@ -319,11 +340,13 @@ const PartnerModal = ({ properties }: IPartiner) => {
           </div>
 
           <div className="mt-7 flex flex-col md:flex-row items-start gap-8">
-            <img
-              alt="team"
-              className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-              src={properties.Avatar.files[0].file.url}
-            />
+            {properties.Avatar.files.length !== 0 && (
+              <img
+                alt="team"
+                className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                src={properties.Avatar.files[0].file.url}
+              />
+            )}
 
             <div className="space-y-3 max-w-[32rem]">
               <div className="flex flex-col md:flex-row items-start justify-between gap-y-2">
