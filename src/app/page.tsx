@@ -8,6 +8,7 @@ import {
   InstagramLogo,
   WhatsappLogo,
   Image as PImage,
+  CheckCircle,
 } from "phosphor-react";
 import Link from "next/link";
 import main_logo from "@/assets/logo.svg";
@@ -15,6 +16,7 @@ import Image from "next/image";
 import main_hero from "@/assets/main_hero.png";
 import main_hero_mob from "@/assets/main_hero_mob.svg";
 import { BounceLoader } from "react-spinners";
+import * as Select from "@radix-ui/react-select";
 
 interface IPartiner {
   properties: {
@@ -73,6 +75,20 @@ interface IPartiner {
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartiner[]>([]);
+  const [specialtyToFilter, setSpecialtyToFilter] = useState("");
+
+  const specialtiesToFilter = partners.reduce(
+    (accumulator: string[], currentValue) => {
+      const specialtyName = currentValue.properties.Specialty.select.name;
+
+      if (!accumulator.includes(specialtyName)) {
+        accumulator.push(specialtyName);
+      }
+
+      return accumulator;
+    },
+    []
+  );
 
   useEffect(() => {
     fetch("api/get-partners")
@@ -91,6 +107,20 @@ export default function Home() {
       });
   }, []);
 
+  function filterSpecialties(array: IPartiner[], specialty: string) {
+    const searchTermLowerCase = specialty.toLowerCase();
+    return array.filter((item) =>
+      item.properties.Specialty.select.name
+        .toLowerCase()
+        .includes(searchTermLowerCase)
+    );
+  }
+  const filteredSpecialties = filterSpecialties(partners, specialtyToFilter);
+
+  const partnersToRender =
+    filteredSpecialties.length === 0 ? partners : filteredSpecialties;
+
+  console.log(specialtyToFilter);
   return (
     <main className="">
       <header className="text-gray-600 body-font">
@@ -180,7 +210,7 @@ export default function Home() {
 
       <section className="text-gray-600 body-font">
         <div className="container px-5 mx-auto mt-20">
-          <div className="flex flex-col text-center w-full mb-20">
+          <div className="flex flex-col text-center w-full mb-14">
             <h1 className="sm:text-3xl text-2xl font-bold title-font mb-4 text-gray-900">
               Time de parceiros
             </h1>
@@ -194,6 +224,51 @@ export default function Home() {
             </p>
           </div>
 
+          <div className="mb-8 block sm:flex h-20 sm:h-auto">
+            <Select.Root
+              value={specialtyToFilter}
+              onValueChange={setSpecialtyToFilter}
+            >
+              <Select.Trigger className="border border-gray-300 rounded-md py-3 px-4 flex items-center justify-between gap-5 text-sm max-w-[38rem] lg:max-w-[25rem] w-full">
+                <Select.Value placeholder="Selecione uma especialidade" />
+                <Select.Icon className="" />
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className="bg-white px-4 py-2 drop-shadow-lg rounded-md">
+                  <Select.ScrollUpButton />
+                  <Select.Viewport>
+                    {specialtiesToFilter.length !== 0 &&
+                      specialtiesToFilter.map((item) => {
+                        return (
+                          <Select.Item
+                            value={item}
+                            key={item}
+                            className="flex items-center justify-between h-10 text-gray-600"
+                          >
+                            <Select.ItemText className="">
+                              <p className="">{item}</p>
+                            </Select.ItemText>
+                            <Select.ItemIndicator className="">
+                              <CheckCircle size={20} />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                        );
+                      })}
+                  </Select.Viewport>
+                  <Select.ScrollDownButton />
+                  <Select.Arrow />
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+
+            <button
+              onClick={() => setSpecialtyToFilter("")}
+              className="float-end sm:float-none py-3 px-4 rounded-md border-gray-300"
+            >
+              Limpar
+            </button>
+          </div>
+
           <BounceLoader
             size={150}
             loading={isLoading}
@@ -202,8 +277,8 @@ export default function Home() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {partners &&
-              partners.map((partner, index) => {
+            {partnersToRender &&
+              partnersToRender.map((partner, index) => {
                 return (
                   <div key={index} className="w-full">
                     <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
@@ -228,7 +303,7 @@ export default function Home() {
                             {partner.properties.Specialty.select.name}
                           </p>
 
-                          <div className="flex md:flex-col md:items-start items-center justify-start mt-2 gap-2">
+                          <div className="flex flex-col items-start justify-start mt-2 gap-2">
                             {partner.properties.Gratuitas.checkbox && (
                               <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
                                 Vagas gratuitas
