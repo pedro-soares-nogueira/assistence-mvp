@@ -78,7 +78,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
       )}
 
       {partnerToShow !== undefined && (
-        <main className="container mx-auto px-4 mt-3 h-[90vh]">
+        <main className="container mx-auto px-4 mt-3 h-[80vh]">
           <Link href={"/"} className="flex gap-3 text-base">
             <ArrowFatLeft size={22} />
             Voltar
@@ -94,7 +94,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
             ) */}
 
             <div className="space-y-3 max-w-[32rem]">
-              <div className="flex flex-col md:flex-row items-start justify-between gap-y-2">
+              <div className="flex flex-col items-start justify-between gap-y-2">
                 <p className="text-gray-900 text-xl font-bold">
                   {partnerToShow?.properties.Name.title[0].plain_text}
                 </p>
@@ -121,6 +121,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                   )}
                 </div>
               </div>
+
               <p className="text-gray-500 text-sm">
                 {partnerToShow?.properties.Details.rich_text[0].plain_text}
               </p>
