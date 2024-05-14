@@ -18,7 +18,7 @@ import main_hero_mob from "@/assets/main_hero_mob.svg";
 import { BounceLoader } from "react-spinners";
 import * as Select from "@radix-ui/react-select";
 
-interface IPartiner {
+export interface IPartiner {
   properties: {
     Name: { id: string; type: string; title: { plain_text: string }[] };
     Avatar: {
@@ -69,6 +69,7 @@ interface IPartiner {
       id: string;
       checkbox: boolean;
     };
+    Slug: { rich_text: { text: { content: string } }[] };
   };
 }
 
@@ -278,6 +279,11 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {partnersToRender &&
               partnersToRender.map((partner, index) => {
+                const slugToPartnerPage =
+                  partner.properties.Slug.rich_text.length !== 0
+                    ? partner.properties.Slug.rich_text[0].text.content
+                    : "";
+
                 return (
                   <div key={index} className="w-full">
                     <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
@@ -323,6 +329,25 @@ export default function Home() {
                         </div>
                       </div>
                       <PartnerModal {...partner} />
+                      {/* <Link
+                        href={`/partners/${slugToPartnerPage}`}
+                        className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
+                      </Link> */}
                     </div>
                   </div>
                 );
