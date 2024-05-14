@@ -120,7 +120,6 @@ export default function Home() {
   const partnersToRender =
     filteredSpecialties.length === 0 ? partners : filteredSpecialties;
 
-  console.log(specialtyToFilter);
   return (
     <main className="">
       <header className="text-gray-600 body-font">
@@ -283,18 +282,23 @@ export default function Home() {
                   <div key={index} className="w-full">
                     <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
                       <div className="flex items-center">
-                        {partner.properties.Avatar.files.length !== 0 && (
-                          <img
-                            alt="team"
-                            className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                            src={partner.properties.Avatar.files[0].file.url}
-                          />
-                        )}
-                        {partner.properties.Avatar.files.length === 0 && (
-                          <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
-                            <PImage size={22} />
-                          </div>
-                        )}
+                        {/* 
+                          {partner.properties.Avatar.files.length !== 0 && (
+                            <img
+                              alt="team"
+                              className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                              src={partner.properties.Avatar.files[0].file.url}
+                            />
+                          )}
+                          {partner.properties.Avatar.files.length === 0 && (
+                            <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                              <PImage size={22} />
+                            </div>
+                          )}
+                        */}
+                        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                          <PImage size={22} />
+                        </div>
                         <div className="flex-grow">
                           <h2 className="text-gray-900 title-font font-medium">
                             {partner.properties.Name.title[0].plain_text}
@@ -410,13 +414,16 @@ const PartnerModal = ({ properties }: IPartiner) => {
           </div>
 
           <div className="mt-7 flex flex-col md:flex-row items-start gap-8">
-            {properties.Avatar.files.length !== 0 && (
+            {/* properties.Avatar.files.length !== 0 && (
               <img
                 alt="team"
                 className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
                 src={properties.Avatar.files[0].file.url}
               />
-            )}
+            ) */}
+            <div className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4 flex items-center justify-center">
+              <PImage size={28} className="text-gray-500" />
+            </div>
 
             <div className="space-y-3 max-w-[32rem]">
               <div className="flex flex-col md:flex-row items-start justify-between gap-y-2">
@@ -474,11 +481,7 @@ const PartnerModal = ({ properties }: IPartiner) => {
 
                 <p className="text-gray-700 text-[13px] blok mt-6">
                   Direto com o profissional você tem mais informações sobre os
-                  atendimentos{" "}
-                  <ArrowDown
-                    size={14}
-                    className="inline-flex text-gray-700 ml-2"
-                  />
+                  atendimentos
                 </p>
 
                 {properties.Whatsapp.url && (
