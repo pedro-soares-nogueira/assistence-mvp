@@ -102,11 +102,6 @@ export default function Home() {
             <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
           </Link>
 
-          {/* <nav className="flex flex-wrap items-center text-base justify-center gap-3 sm:gap-6">
-            <a className="hover:text-gray-900">Quem somos</a>
-            <a className="hover:text-gray-900">Profissionais</a>
-          </nav> */}
-
           <Link
             href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
             className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none"
