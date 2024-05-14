@@ -36,7 +36,6 @@ export default function RootLayout({
       </head>
 
       <body className={mont.className}>
-        {/* GTM */}
         {/*  <noscript
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPWZWDR8" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
@@ -45,6 +44,7 @@ export default function RootLayout({
 
         {/* ---------------- */}
 
+        {/* GTM */}
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=GTM-NPWZWDR8`}
@@ -64,6 +64,26 @@ export default function RootLayout({
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer', 'GTM-NPWZWDR8');
             `,
+          }}
+        />
+
+        {/* GTAG */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-WECG35VSF3`}
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+                      gtag('config', 'G-WECG35VSF3', {
+                      page_path: window.location.pathname,
+                      });
+                    `,
           }}
         />
 
