@@ -70,6 +70,7 @@ export interface IPartiner {
       checkbox: boolean;
     };
     Slug: { rich_text: { text: { content: string } }[] };
+    Avatar_url: { url: string };
   };
 }
 
@@ -284,27 +285,26 @@ export default function Home() {
                     ? partner.properties.Slug.rich_text[0].text.content
                     : "";
 
+                const url = partner.properties.Avatar_url.url;
                 return (
                   <div key={index} className="w-full">
                     <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
                       <div className="flex items-center">
-                        {/* 
-                          {partner.properties.Avatar.files.length !== 0 && (
-                            <img
-                              alt="team"
-                              className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                              src={partner.properties.Avatar.files[0].file.url}
-                            />
-                          )}
-                          {partner.properties.Avatar.files.length === 0 && (
-                            <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
-                              <PImage size={22} />
-                            </div>
-                          )}
-                        */}
-                        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                        {url !== null && (
+                          <img
+                            alt="team"
+                            className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                            src={url}
+                          />
+                        )}
+                        {url === null && (
+                          <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                            <PImage size={22} />
+                          </div>
+                        )}
+                        {/*  <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
                           <PImage size={22} />
-                        </div>
+                        </div> */}
                         <div className="flex-grow">
                           <h2 className="text-gray-900 title-font font-medium">
                             {partner.properties.Name.title[0].plain_text}

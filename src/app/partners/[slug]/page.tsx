@@ -85,23 +85,19 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
           </Link>
 
           <div className="mt-7 flex flex-col md:flex-row items-start gap-8">
-            {/* properties.Avatar.files.length !== 0 && (
-              <img
-                alt="team"
-                className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                src={properties.Avatar.files[0].file.url}
-              />
-            ) */}
-
             <div className="space-y-3 max-w-[32rem]">
               <div className="flex flex-col items-start justify-between gap-y-2">
                 <p className="text-gray-900 text-xl font-bold">
                   {partnerToShow?.properties.Name.title[0].plain_text}
                 </p>
 
-                <div className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4 flex items-center justify-center my-7">
-                  <PImage size={28} className="text-gray-500" />
-                </div>
+                {partnerToShow.properties.Avatar_url.url !== null && (
+                  <img
+                    alt="team"
+                    className="w-36 h-36 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                    src={partnerToShow.properties.Avatar_url.url}
+                  />
+                )}
 
                 <div className="flex items-start gap-2">
                   {partnerToShow?.properties.Facebook.url && (
