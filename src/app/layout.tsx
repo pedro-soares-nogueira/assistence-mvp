@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import Link from "next/link";
+import Image from "next/image";
+import { InstagramLogo } from "phosphor-react";
+import MainFooter from "@/components/MainFooter";
+import MainHeader from "@/components/MainHeader";
 
 const mont = Montserrat({ subsets: ["latin"] });
 
@@ -65,7 +70,9 @@ export default function RootLayout({
           }}
         />
 
+        <MainHeader />
         {children}
+        <MainFooter />
       </body>
     </html>
   );

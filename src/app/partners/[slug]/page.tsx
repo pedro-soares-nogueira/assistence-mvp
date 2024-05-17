@@ -44,28 +44,6 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <header className="text-gray-600 body-font">
-        <div className="container mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link
-            href={"/"}
-            className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
-          >
-            <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
-          </Link>
-
-          <Link
-            href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
-            className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none"
-          >
-            <span className="flex items-start flex-col leading-none">
-              <span className="text-xs text-gray-800">
-                Sou profissional e quero participar
-              </span>
-            </span>
-          </Link>
-        </div>
-      </header>
-
       {partnerToShow === undefined && (
         <div className="mt-20">
           <BounceLoader
@@ -166,33 +144,6 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
           </div>
         </main>
       )}
-
-      <footer className="text-gray-600 body-font">
-        <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-          <Link
-            href={"/"}
-            className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
-          >
-            <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
-          </Link>
-          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
-            © 2024 PrideCare —
-            <Link
-              href={"https://www.instagram.com/pridecare.pro/"}
-              className="text-gray-600 ml-1"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              @prideCare
-            </Link>
-          </p>
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start space-x-3">
-            <Link href={"https://www.instagram.com/pridecare.pro/"}>
-              <InstagramLogo size={26} className="text-gray-500" />
-            </Link>
-          </span>
-        </div>
-      </footer>
     </div>
   );
 };
