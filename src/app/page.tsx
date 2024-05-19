@@ -70,6 +70,8 @@ export interface IPartiner {
       checkbox: boolean;
     };
     Slug: { rich_text: { text: { content: string } }[] };
+    CRP: { rich_text: { text: { content: string } }[] };
+    CRM: { rich_text: { text: { content: string } }[] };
     Avatar_url: { url: string };
   };
 }
