@@ -59,8 +59,8 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
       {partnerToShow !== undefined && (
         <div className="container mx-auto px-4">
           <div className="pt-8 pb-5 mb-10 border-b border-white flex items-center justify-between flex-col gap-4 xs:flex-row">
-            <Link href={"/"} className="flex gap-3 text-base font-bold">
-              <ArrowLeft size={22} weight="bold" />
+            <Link href={"/"} className="flex gap-3 font-semibold">
+              <ArrowLeft size={20} weight="bold" />
               Voltar
             </Link>
 
@@ -72,8 +72,8 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
               }}
             >
               <button className="bg-white border border-[#1E1E1E] text-[#1E1E1E] py-3 px-5 rounded-lg hover:opacity-80 focus:outline-none gap-4">
-                <span className="flex items-center justify-center gap-1 font-semibold">
-                  <ShareNetwork size={24} weight="bold" />
+                <span className="flex items-center justify-center gap-2 font-semibold text-sm">
+                  <ShareNetwork size={20} weight="bold" />
                   Compartilhar perfil
                 </span>
               </button>
@@ -202,10 +202,6 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
           />
         </div>
       )}
-
-      {/* {partnerToShow !== undefined && (
-       
-      )} */}
     </div>
   );
 };
