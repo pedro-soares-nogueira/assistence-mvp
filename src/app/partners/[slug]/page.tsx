@@ -24,6 +24,9 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   const pathname = usePathname();
 
+  const communBasePath = "/partners/";
+  const partnerToShare = pathname.replace(communBasePath, "");
+
   useEffect(() => {
     fetch("../api/get-partners")
       .then((response) => {
@@ -68,7 +71,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
               data={{
                 title: "",
                 text: "Pride Care - Portal de Saúde para a Comunidade LGBT+: Conheça nosso parceiro:",
-                url: `pridecare.pro${pathname}`,
+                url: `${partnerToShare}`,
               }}
             >
               <button className="bg-white border border-[#1E1E1E] text-[#1E1E1E] py-3 px-5 rounded-lg hover:opacity-80 focus:outline-none gap-4">
