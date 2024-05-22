@@ -51,6 +51,14 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
         params.slug === "")
   );
 
+  const partnerNumberFormatted = `55${partnerToShow?.properties.Whatsapp.number}`;
+
+  const messageToSend = encodeURIComponent(
+    "Olá, estou vindo da Pride Care. Gostaria de mais detalhes do atendimento, pode me ajudar?"
+  );
+
+  const linkWhatsApp = `https://wa.me/${partnerNumberFormatted}?text=${messageToSend}`;
+
   return (
     <div className="relative">
       <Image
@@ -118,7 +126,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                   </span>
                 )}
 
-                <div className="!mt-4 flex md:items-start gap-3 flex-col md:flex-row items-center justify-center">
+                <div className="!mt-4 flex md:items-start md:justify-start gap-3 flex-col md:flex-row items-center justify-center">
                   {partnerToShow?.properties.Valor_social?.checkbox && (
                     <span className="bg-gray-200 flex py-1 px-2 rounded-[4px] text-[11px] md:text-xs gap-1">
                       <CheckCircle size={16} className="text-green-600" />
@@ -151,9 +159,9 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                       <InstagramLogo size={22} className="text-white" />
                     </Link>
                   )}
-                  {partnerToShow?.properties.Whatsapp.url && (
+                  {partnerToShow?.properties.Whatsapp.number && (
                     <Link
-                      href={partnerToShow?.properties.Whatsapp.url}
+                      href={linkWhatsApp}
                       className="bg-[#602DA0] rounded-[4px] p-1"
                     >
                       <WhatsappLogo size={22} className="text-white" />
@@ -181,9 +189,9 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                 {partnerToShow?.properties.Details.rich_text[0].plain_text}
               </p>
 
-              {partnerToShow?.properties.Whatsapp.url && (
+              {partnerToShow?.properties.Whatsapp.number && (
                 <Link
-                  href={partnerToShow?.properties.Whatsapp.url}
+                  href={linkWhatsApp}
                   className="bg-green-700 rounded-md px-5 py-[10px] text-white font-semibold mt-12 flex items-center justify-center gap-2 text-xs max-w-[22rem] w-full mx-auto"
                 >
                   <WhatsappLogo size={22} />
