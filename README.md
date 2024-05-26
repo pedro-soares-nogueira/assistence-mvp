@@ -28,10 +28,6 @@ bun dev
 - [ ] Quando logado, usuário pode criar/alterar seus próprios artigos
 - [ ] Quando logado, usuário pode deixar particições em artigos de outros parceiros
 
-### MVP - BLOG
-
-- [ ] Diversos artigos sobre diversos conteúdos
-
 ### MVP - ADMIN
 
 - [ ] Quando logado, usuário pode ver uma lista de customes
@@ -39,3 +35,7 @@ bun dev
 - [ ] Quando logado, usuário pode ver uma lista de artigos
 - [ ] Quando logado, usuário tem acesso a numeros refentes a partners
   - [ ] Quantidade de acessos/atendimentos/participações, contatos, estrelas
+
+### MVP - BLOG
+
+- [ ] Diversos artigos sobre diversos conteúdos
