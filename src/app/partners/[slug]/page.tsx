@@ -59,6 +59,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   const linkWhatsApp = `https://wa.me/${partnerNumberFormatted}?text=${messageToSend}`;
 
+  console.log(partnerToShow?.properties.Grat_quantity?.number);
   return (
     <div className="relative">
       <Image
@@ -134,10 +135,13 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                     </span>
                   )}
 
-                  {partnerToShow?.properties.Gratuitas?.checkbox && (
+                  {partnerToShow.properties.Grat_quantity?.number !== null && (
                     <span className="bg-gray-200 flex py-1 px-2 rounded-[4px] text-[11px] md:text-xs gap-1">
                       <CheckCircle size={16} className="text-green-600" />
-                      Vagas gratuitas - consultar disponibilidade
+                      Vagas gratuitas - Total de{" "}
+                      {partnerToShow.properties.Grat_quantity?.number === null
+                        ? "0"
+                        : partnerToShow.properties.Grat_quantity?.number}
                     </span>
                   )}
                 </div>

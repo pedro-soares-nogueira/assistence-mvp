@@ -69,6 +69,14 @@ export interface IPartiner {
       id: string;
       checkbox: boolean;
     };
+    Grat_quantity: {
+      id: string;
+      number: number;
+    };
+    Disasters: {
+      id: string;
+      checkbox: boolean;
+    };
     Slug: { rich_text: { text: { content: string } }[] };
     CRP: { rich_text: { text: { content: string } }[] };
     CRM: { rich_text: { text: { content: string } }[] };
@@ -119,10 +127,13 @@ export default function Home() {
         .includes(searchTermLowerCase)
     );
   }
+
   const filteredSpecialties = filterSpecialties(partners, specialtyToFilter);
 
   const partnersToRender =
     filteredSpecialties.length === 0 ? partners : filteredSpecialties;
+
+  console.log(partners);
 
   return (
     <main className="">
@@ -294,7 +305,8 @@ export default function Home() {
                           </p>
 
                           <div className="flex flex-col items-start justify-start mt-2 gap-2">
-                            {partner.properties.Gratuitas.checkbox && (
+                            {partner.properties.Grat_quantity?.number !==
+                              null && (
                               <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
                                 Vagas gratuitas
                               </span>
@@ -303,6 +315,11 @@ export default function Home() {
                             {partner.properties.Valor_social?.checkbox && (
                               <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
                                 Valor social
+                              </span>
+                            )}
+                            {partner.properties.Disasters?.checkbox && (
+                              <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
+                                Desastres
                               </span>
                             )}
                           </div>
