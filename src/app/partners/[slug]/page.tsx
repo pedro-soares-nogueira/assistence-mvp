@@ -59,7 +59,6 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   const linkWhatsApp = `https://wa.me/${partnerNumberFormatted}?text=${messageToSend}`;
 
-  console.log(partnerToShow?.properties.Grat_quantity?.number);
   return (
     <div className="relative">
       <Image

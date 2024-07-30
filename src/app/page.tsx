@@ -88,6 +88,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartiner[]>([]);
   const [specialtyToFilter, setSpecialtyToFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const specialtiesToFilter = partners.reduce(
     (accumulator: string[], currentValue) => {
@@ -133,7 +135,23 @@ export default function Home() {
   const partnersToRender =
     filteredSpecialties.length === 0 ? partners : filteredSpecialties;
 
-  console.log(partners);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPartners = partnersToRender.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+
+    window.scrollTo({ top: 1300, behavior: "smooth" });
+  };
+
+  const totalPages = Math.ceil(partnersToRender.length / itemsPerPage);
+  const maxPageButtons = 2;
+  const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+  const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
   return (
     <main className="">
@@ -269,89 +287,457 @@ export default function Home() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {partnersToRender &&
-              partnersToRender.map((partner, index) => {
-                const slugToPartnerPage =
-                  partner.properties.Slug.rich_text.length !== 0
-                    ? partner.properties.Slug.rich_text[0].text.content
-                    : "";
-
-                const url = partner.properties.Avatar_url.url;
-                return (
-                  <div key={index} className="w-full">
-                    <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
-                      <div className="flex items-center">
-                        {url !== null && (
-                          <img
-                            alt="team"
-                            className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                            src={url}
-                          />
-                        )}
-                        {url === null && (
-                          <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
-                            <PImage size={22} />
-                          </div>
-                        )}
-                        {/*  <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
-                          <PImage size={22} />
-                        </div> */}
-                        <div className="flex-grow">
-                          <h2 className="text-gray-900 title-font font-medium">
-                            {partner.properties.Name.title[0].plain_text}
-                          </h2>
-                          <p className={`text-gray-500 text-sm`}>
-                            {partner.properties.Specialty.select.name}
-                          </p>
-
-                          <div className="flex flex-col items-start justify-start mt-2 gap-2">
-                            {partner.properties.Grat_quantity?.number !==
-                              null && (
-                              <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
-                                Vagas gratuitas
-                              </span>
-                            )}
-
-                            {partner.properties.Valor_social?.checkbox && (
-                              <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
-                                Valor social
-                              </span>
-                            )}
-                            {partner.properties.Disasters?.checkbox && (
-                              <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
-                                Desastres
-                              </span>
-                            )}
-                          </div>
-                        </div>
+            {currentPartners.map((partner, index) => {
+              const slugToPartnerPage =
+                partner.properties.Slug.rich_text.length !== 0
+                  ? partner.properties.Slug.rich_text[0].text.content
+                  : "";
+              const url = partner.properties.Avatar_url.url;
+              return (
+                <div
+                  key={index}
+                  className="space-y-4 border border-[#F5F5F5] p-5 rounded-[2px]"
+                >
+                  <div className="flex">
+                    {url !== null ? (
+                      <img
+                        alt="team"
+                        className="w-16 h-16 bg-gray-100 object-cover object-center rounded-[5px] mr-4"
+                        src={url}
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+                        <PImage size={22} />
                       </div>
-                      {/* <PartnerModal {...partner} /> */}
-                      <Link
-                        href={`/partners/${slugToPartnerPage}`}
-                        className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                          />
-                        </svg>
-                      </Link>
+                    )}
+                    <div>
+                      <h2 className="text-gray-900 title-font font-semibold text-md">
+                        {partner.properties.Name.title[0].plain_text}
+                      </h2>
+                      <p className={`text-gray-500 text-xs`}>
+                        {partner.properties.Specialty.select.name}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
+                  <div className="flex items-center justify-start md:items-start md:justify-start flex-wrap gap-[10px]">
+                    {partner.properties.Tags.multi_select.map((item) => (
+                      <p
+                        key={item.id}
+                        className="text-gray-900 rounded-sm text-xs bg-gray-200 py-[2px] px-[6px]"
+                      >
+                        {item.name}
+                      </p>
+                    ))}
+                  </div>
+                  <div>
+                    {partner.properties.Details.rich_text && (
+                      <span className="text-gray-900 rounded-sm text-[13px] line-clamp-4 overflow-hidden text-ellipsis">
+                        {partner.properties.Details.rich_text[0].plain_text}
+                      </span>
+                    )}
+                  </div>
+                  <Link
+                    href={`/partners/${slugToPartnerPage}`}
+                    className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] text-xs"
+                  >
+                    Ver perfil completo
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center mt-8">
+            {currentPage > 1 && (
+              <button
+                onClick={() => handlePageChange(1)}
+                className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 h-[36px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+                  />
+                </svg>
+              </button>
+            )}
+
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50 h-[36px]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-3"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5"
+                />
+              </svg>
+            </button>
+
+            {/* Number Buttons */}
+            {/* {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+              const pageNumber = startPage + index;
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`px-4 py-2 mx-1 text-sm font-medium ${
+                    pageNumber === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700"
+                  } rounded hover:bg-blue-400`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })} */}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50 h-[36px]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-3"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </button>
+
+            {currentPage < totalPages && (
+              <button
+                onClick={() => handlePageChange(totalPages)}
+                className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 h-[36px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </section>
     </main>
   );
 }
+
+/* OLD PARTNER CARD */
+
+/*  
+ 
+ <div key={index} className="w-full">
+  <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
+    <div className="flex items-center">
+      {url !== null && (
+        <img
+          alt="team"
+          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+          src={url}
+        />
+      )}
+      {url === null && (
+        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+          <PImage size={22} />
+        </div>
+      )}
+      <div className="flex-grow">
+        <h2 className="text-gray-900 title-font font-medium">
+          {partner.properties.Name.title[0].plain_text}
+        </h2>
+        <p className={`text-gray-500 text-sm`}>
+          {partner.properties.Specialty.select.name}
+        </p>
+
+        <div className="flex flex-col items-start justify-start mt-2 gap-2">
+          {partner.properties.Grat_quantity?.number !==
+            null && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Vagas gratuitas
+            </span>
+          )}
+
+          {partner.properties.Valor_social?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Valor social
+            </span>
+          )}
+          {partner.properties.Disasters?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
+              Desastr <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
+    <div className="flex items-center">
+      {url !== null && (
+        <img
+          alt="team"
+          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+          src={url}
+        />
+      )}
+      {url === null && (
+        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+          <PImage size={22} />
+        </div>
+      )}
+      <div className="flex-grow">
+        <h2 className="text-gray-900 title-font font-medium">
+          {partner.properties.Name.title[0].plain_text}
+        </h2>
+        <p className={`text-gray-500 text-sm`}>
+          {partner.properties.Specialty.select.name}
+        </p>
+
+        <div className="flex flex-col items-start justify-start mt-2 gap-2">
+          {partner.properties.Grat_quantity?.number !==
+            null && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Vagas gratuitas
+            </span>
+          )}
+
+          {partner.properties.Valor_social?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Valor social
+            </span>
+          )}
+          {partner.properties.Disasters?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
+              Desastres
+            </span>
+          )}
+
+          {partner.properties.Details.rich_text && (
+            <span className="text-gray-900 rounded-sm text-xs">
+              {
+                partner.properties.Details.rich_text[0]
+                  .plain_text
+              }
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+    <Link <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
+    <div className="flex items-center">
+      {url !== null && (
+        <img
+          alt="team"
+          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+          src={url}
+        />
+      )}
+      {url === null && (
+        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+          <PImage size={22} />
+        </div>
+      )}
+      <div className="flex-grow">
+        <h2 className="text-gray-900 title-font font-medium">
+          {partner.properties.Name.title[0].plain_text}
+        </h2>
+        <p className={`text-gray-500 text-sm`}>
+          {partner.properties.Specialty.select.name}
+        </p>
+
+        <div className="flex flex-col items-start justify-start mt-2 gap-2">
+          {partner.properties.Grat_quantity?.number !==
+            null && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Vagas gratuitas
+            </span>
+          )}
+
+          {partner.properties.Valor_social?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Valor social
+            </span>
+          )}
+          {partner.properties.Disasters?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
+              Desastres
+            </span>
+          )}
+
+          {partner.properties.Details.rich_text && (
+            <span className="text-gray-900 rounded-sm text-xs">
+              {
+                partner.properties.Details.rich_text[0]
+                  .plain_text
+              }
+            </span>
+          )}
+        </div>
+      </div>
+    </div> <div className="h-full flex items-center justify-between border-gray-200 border p-4 rounded-lg gap-2">
+    <div className="flex items-center">
+      {url !== null && (
+        <img
+          alt="team"
+          className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+          src={url}
+        />
+      )}
+      {url === null && (
+        <div className="w-16 h-16 bg-gray-100 rounded-full mr-4 flex items-center justify-center">
+          <PImage size={22} />
+        </div>
+      )}
+      <div className="flex-grow">
+        <h2 className="text-gray-900 title-font font-medium">
+          {partner.properties.Name.title[0].plain_text}
+        </h2>
+        <p className={`text-gray-500 text-sm`}>
+          {partner.properties.Specialty.select.name}
+        </p>
+
+        <div className="flex flex-col items-start justify-start mt-2 gap-2">
+          {partner.properties.Grat_quantity?.number !==
+            null && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Vagas gratuitas
+            </span>
+          )}
+
+          {partner.properties.Valor_social?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-purple-200 py-1 px-2">
+              Valor social
+            </span>
+          )}
+          {partner.properties.Disasters?.checkbox && (
+            <span className="text-gray-900 rounded-sm text-xs bg-green-200 py-1 px-2">
+              Desastres
+            </span>
+          )}
+
+          {partner.properties.Details.rich_text && (
+            <span className="text-gray-900 rounded-sm text-xs">
+              {
+                partner.properties.Details.rich_text[0]
+                  .plain_text
+              }
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+    <Link
+      href={`/partners/${slugToPartnerPage}`}
+      className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </Link>
+  </div>
+</div> .w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </Link>
+  </div>
+</div> 
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </Link>
+  </div>
+</div> 
+          {partner.properties.Details.rich_text && (
+            <span className="text-gray-900 rounded-sm text-xs">
+              {
+                partner.properties.Details.rich_text[0]
+                  .plain_text
+              }
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+    <Link
+      href={`/partners/${slugToPartnerPage}`}
+      className="p-2 rounded-lg bg-gray-100 hover:opacity-55 transition-all"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </Link>
+  </div>
+</div> 
+*/
