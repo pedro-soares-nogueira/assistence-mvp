@@ -88,6 +88,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartiner[]>([]);
   const [specialtyToFilter, setSpecialtyToFilter] = useState("");
+  const [nameToFilter, setNameToFilter] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -121,19 +123,29 @@ export default function Home() {
       });
   }, []);
 
-  function filterSpecialties(array: IPartiner[], specialty: string) {
-    const searchTermLowerCase = specialty.toLowerCase();
-    return array.filter((item) =>
-      item.properties.Specialty.select.name
+  function filterPartners(array: IPartiner[], specialty: string, name: string) {
+    const searchTermLowerCase = name.toLowerCase();
+    const specialtyTermLowerCase = specialty.toLowerCase();
+
+    return array.filter((item) => {
+      const specialtyMatch = item.properties.Specialty.select.name
         .toLowerCase()
-        .includes(searchTermLowerCase)
-    );
+        .includes(specialtyTermLowerCase);
+      const nameMatch = item.properties.Name.title[0].plain_text
+        .toLowerCase()
+        .includes(searchTermLowerCase);
+      return specialtyMatch && nameMatch;
+    });
   }
 
-  const filteredSpecialties = filterSpecialties(partners, specialtyToFilter);
+  const filteredPartners = filterPartners(
+    partners,
+    specialtyToFilter,
+    nameToFilter
+  );
 
   const partnersToRender =
-    filteredSpecialties.length === 0 ? partners : filteredSpecialties;
+    filteredPartners.length === 0 ? partners : filteredPartners;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -150,8 +162,6 @@ export default function Home() {
 
   const totalPages = Math.ceil(partnersToRender.length / itemsPerPage);
   const maxPageButtons = 2;
-  const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-  const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
   return (
     <main className="">
@@ -234,12 +244,23 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mb-8 block sm:flex h-20 sm:h-auto">
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-2">
+            <input
+              type="text"
+              placeholder="Buscar por nome"
+              value={nameToFilter}
+              onChange={(e) => setNameToFilter(e.target.value)}
+              className="border border-gray-300 rounded-md py-3 px-4 text-sm w-full"
+            />
+
             <Select.Root
               value={specialtyToFilter}
               onValueChange={setSpecialtyToFilter}
             >
-              <Select.Trigger className="border border-gray-300 rounded-md py-3 px-4 flex items-center justify-between gap-5 text-sm max-w-[38rem] lg:max-w-[25rem] w-full">
+              <Select.Trigger
+                className="border border-gray-300 rounded-md py-3 px-4 flex items-center 
+                        justify-between gap-5 text-sm  w-full"
+              >
                 <Select.Value placeholder="Selecione uma especialidade" />
                 <Select.Icon className="" />
               </Select.Trigger>
@@ -272,7 +293,10 @@ export default function Home() {
             </Select.Root>
 
             <button
-              onClick={() => setSpecialtyToFilter("")}
+              onClick={() => {
+                setSpecialtyToFilter("");
+                setNameToFilter("");
+              }}
               className="float-end sm:float-none py-3 px-4 rounded-md border-gray-300"
             >
               Limpar
