@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "AloeveraDisplay";
+  src: url("/fonts/OTF/AloeveraDisplay-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+.heading-bold {
+  font-family: "AloeveraDisplay";
+  font-weight: 700;
+}

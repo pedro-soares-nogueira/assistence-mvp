@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { InstagramLogo } from "phosphor-react";
 import MainFooter from "@/components/MainFooter";
 import MainHeader from "@/components/MainHeader";
 
-const mont = Montserrat({ subsets: ["latin"] });
+const dmsans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pride Care",
@@ -26,7 +26,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
 
-      <body className={mont.className}>
+      <body className={dmsans.className}>
         {/* GTM */}
         <Script
           id="gtm-script"
