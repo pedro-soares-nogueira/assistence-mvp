@@ -115,7 +115,7 @@ const TestingHome = () => {
               value={nameToFilter}
               onChange={(e) => setNameToFilter(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="border border-gray-300 rounded-md py-3 px-4 text-sm w-full md:col-span-3"
+              className="border border-gray-300 rounded-[2px] py-3 px-4 text-sm w-full md:col-span-3"
             />
 
             <Select.Root
@@ -123,14 +123,14 @@ const TestingHome = () => {
               onValueChange={setSpecialtyToFilter}
             >
               <Select.Trigger
-                className="border border-gray-300 rounded-md py-3 px-4 flex items-center 
+                className="border border-gray-300 rounded-[2px] py-3 px-4 flex items-center 
                         justify-between gap-5 text-sm w-full md:col-span-3 bg-white"
               >
                 <Select.Value placeholder="Selecione uma especialidade" />
                 <Select.Icon className="" />
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content className="bg-white px-4 py-2 drop-shadow-lg rounded-md">
+                <Select.Content className="bg-white px-4 py-2 drop-shadow-lg rounded-[2px]">
                   <Select.ScrollUpButton />
                   <Select.Viewport>
                     {specialtiesToFilter.length !== 0 &&
@@ -160,7 +160,7 @@ const TestingHome = () => {
             <div className="flex gap-2 flex-col sm:flex-row md:col-span-6 lg:col-span-1">
               <button
                 onClick={handleSearch}
-                className="w-full py-3 px-4 rounded-md border border-white text-white "
+                className="w-full py-[8px] px-4 rounded-[2px] border border-white text-white "
               >
                 Buscar
               </button>
@@ -171,7 +171,7 @@ const TestingHome = () => {
                   setNameToFilter("");
                   setSearchTriggered(false);
                 }}
-                className="w-full py-3 px-4 rounded-md text-white"
+                className="w-full py-[8px] px-4 rounded-[2px] text-white"
               >
                 Limpar
               </button>

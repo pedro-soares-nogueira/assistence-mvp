@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { InstagramLogo } from "phosphor-react";
+import main_logo_new from "../assets/logo-pridecare-dark.svg";
 import main_logo from "@/assets/logo.svg";
 import React from "react";
 
@@ -10,11 +11,8 @@ const MainFooter = () => {
   return (
     <footer className="text-gray-600 body-font">
       <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-        <Link
-          href={"/"}
-          className="border border-[#e7e7e7] flex title-font font-medium items-center text-gray-900"
-        >
-          <Image alt="" src={main_logo} className="max-w-[145px] w-full" />
+        <Link href={"/"} className="">
+          <Image alt="" src={main_logo_new} className="max-w-[145px] w-full" />
         </Link>
         <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
           © 2024 PrideCare —

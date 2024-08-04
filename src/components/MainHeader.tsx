@@ -7,7 +7,7 @@ import Image from "next/image";
 const MainHeader = () => {
   return (
     <header className="text-gray-600 body-font">
-      <div className="container mx-auto px-4 py-5 flex items-center justify-between gap-4">
+      <div className="lg:container mx-auto px-4 py-5 flex items-center justify-between gap-4">
         <Link
           href={"/"}
           className="flex title-font font-medium items-center text-gray-900"
