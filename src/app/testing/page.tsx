@@ -12,6 +12,7 @@ const TestingHome = () => {
   const [partners, setPartners] = useState<IPartiner[]>([]);
   const [specialtyToFilter, setSpecialtyToFilter] = useState("");
   const [nameToFilter, setNameToFilter] = useState("");
+  const [searchTriggered, setSearchTriggered] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -61,14 +62,11 @@ const TestingHome = () => {
     });
   }
 
-  const filteredPartners = filterPartners(
-    partners,
-    specialtyToFilter,
-    nameToFilter
-  );
+  const filteredPartners = searchTriggered
+    ? filterPartners(partners, specialtyToFilter, nameToFilter)
+    : partners;
 
-  const partnersToRender =
-    filteredPartners.length === 0 ? partners : filteredPartners;
+  const partnersToRender = filteredPartners;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -79,16 +77,27 @@ const TestingHome = () => {
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  };
 
-    window.scrollTo({ top: 1300, behavior: "smooth" });
+  const handleSearch = () => {
+    setSearchTriggered(true);
+    setCurrentPage(1);
   };
 
   const totalPages = Math.ceil(partnersToRender.length / itemsPerPage);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <>
       <section
         className="relative overflow-hidden bg-gradient-to-b from-[#222C60] to-[#1B1E27] 
-                          min-h-96 flex items-center justify-center text-center"
+                          min-h-[28rem] flex items-center justify-center text-center"
       >
         <div className="md:max-w-[58rem] mx-auto px-4 space-y-12 w-full">
           <div className="space-y-2 text-sm">
@@ -99,13 +108,13 @@ const TestingHome = () => {
               Busque profissionais inclusivos
             </h2>
           </div>
-          {/* <div className="min-h-[52px] max-w-[800px] mx-auto bg-white border border-[#D6D6D6] rounded-lg flex items-center justify-start px-5 py-4 text-[#797979]"></div> */}
-          <div className="mb-8 grid grid-cols-1 md:grid-cols-7 gap-2">
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-7 gap-2">
             <input
               type="text"
               placeholder="Buscar por nome"
               value={nameToFilter}
               onChange={(e) => setNameToFilter(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="border border-gray-300 rounded-md py-3 px-4 text-sm w-full md:col-span-3"
             />
 
@@ -115,7 +124,7 @@ const TestingHome = () => {
             >
               <Select.Trigger
                 className="border border-gray-300 rounded-md py-3 px-4 flex items-center 
-                        justify-between gap-5 text-sm  w-full md:col-span-3 bg-white"
+                        justify-between gap-5 text-sm w-full md:col-span-3 bg-white"
               >
                 <Select.Value placeholder="Selecione uma especialidade" />
                 <Select.Icon className="" />
@@ -148,20 +157,28 @@ const TestingHome = () => {
               </Select.Portal>
             </Select.Root>
 
-            <button
-              onClick={() => {
-                setSpecialtyToFilter("");
-                setNameToFilter("");
-              }}
-              className="float-end sm:float-none py-3 px-4 rounded-md border border-white text-white "
-            >
-              Limpar
-            </button>
+            <div className="flex gap-2 flex-col sm:flex-row md:col-span-6 lg:col-span-1">
+              <button
+                onClick={handleSearch}
+                className="w-full py-3 px-4 rounded-md border border-white text-white "
+              >
+                Buscar
+              </button>
+
+              <button
+                onClick={() => {
+                  setSpecialtyToFilter("");
+                  setNameToFilter("");
+                  setSearchTriggered(false);
+                }}
+                className="w-full py-3 px-4 rounded-md text-white"
+              >
+                Limpar
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* <div className="header-circle-green absolute top-[-210px] left-[-10rem]" /> */}
-        {/* <div className="header-circle-purple absolute bottom-[-210px] right-[-130px]" /> */}
         <div className="absolute bottom-0 inset-x-0 w-full flex items-center justify-between">
           <div className="bg-[#7E34D9] max-w-[900px] w-full min-h-[8px]" />
           <div className="bg-[#0074A6] max-w-[900px] w-full min-h-[8px]" />
@@ -173,66 +190,7 @@ const TestingHome = () => {
       </section>
 
       <section className="text-gray-600 body-font">
-        <div className="container px-5 mx-auto mt-[2rem] md:mt-20">
-          {/* <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-2">
-            <input
-              type="text"
-              placeholder="Buscar por nome"
-              value={nameToFilter}
-              onChange={(e) => setNameToFilter(e.target.value)}
-              className="border border-gray-300 rounded-md py-3 px-4 text-sm w-full"
-            />
-
-            <Select.Root
-              value={specialtyToFilter}
-              onValueChange={setSpecialtyToFilter}
-            >
-              <Select.Trigger
-                className="border border-gray-300 rounded-md py-3 px-4 flex items-center 
-                        justify-between gap-5 text-sm  w-full"
-              >
-                <Select.Value placeholder="Selecione uma especialidade" />
-                <Select.Icon className="" />
-              </Select.Trigger>
-              <Select.Portal>
-                <Select.Content className="bg-white px-4 py-2 drop-shadow-lg rounded-md">
-                  <Select.ScrollUpButton />
-                  <Select.Viewport>
-                    {specialtiesToFilter.length !== 0 &&
-                      specialtiesToFilter.map((item) => {
-                        return (
-                          <Select.Item
-                            value={item}
-                            key={item}
-                            className="flex items-center justify-between h-10 text-gray-600"
-                          >
-                            <Select.ItemText className="">
-                              <p className="">{item}</p>
-                            </Select.ItemText>
-                            <Select.ItemIndicator className="">
-                              <CheckCircle size={20} />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                        );
-                      })}
-                  </Select.Viewport>
-                  <Select.ScrollDownButton />
-                  <Select.Arrow />
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
-
-            <button
-              onClick={() => {
-                setSpecialtyToFilter("");
-                setNameToFilter("");
-              }}
-              className="float-end sm:float-none py-3 px-4 rounded-md border-gray-300"
-            >
-              Limpar
-            </button>
-          </div> */}
-
+        <div className="sm:container px-5 mx-auto mt-[2rem] md:mt-20">
           <BounceLoader
             size={150}
             loading={isLoading}
@@ -274,7 +232,7 @@ const TestingHome = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-start md:items-start md:justify-start flex-wrap gap-[10px] min-h-[50px]">
+                    <div className="flex items-center justify-start md:items-start md:justify-start flex-wrap gap-[10px] md:min-h-[50px]">
                       {partner.properties.Tags.multi_select
                         .slice(0, 3)
                         .map((item) => (
@@ -355,24 +313,6 @@ const TestingHome = () => {
                 />
               </svg>
             </button>
-
-            {/* Number Buttons */}
-            {/* {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
-              const pageNumber = startPage + index;
-              return (
-                <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`px-4 py-2 mx-1 text-sm font-medium ${
-                    pageNumber === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700"
-                  } rounded hover:bg-blue-400`}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })} */}
 
             <button
               onClick={() => handlePageChange(currentPage + 1)}
