@@ -5,76 +5,11 @@ import { Image as PImage, CheckCircle } from "phosphor-react";
 import Link from "next/link";
 import { BounceLoader } from "react-spinners";
 import * as Select from "@radix-ui/react-select";
-
-export interface IPartiner {
-  properties: {
-    Name: { id: string; type: string; title: { plain_text: string }[] };
-    Avatar: {
-      id: string;
-      type: string;
-      files: {
-        name: string;
-        type: string;
-        file: {
-          url: string;
-          expiry_time: string;
-        };
-      }[];
-    };
-    Details: {
-      id: string;
-      type: string;
-      rich_text: {
-        plain_text: string;
-      }[];
-    };
-    Facebook: { id: string; type: string; url: string };
-    Instagram: { id: string; type: string; url: string };
-    Whatsapp: { id: string; number: number };
-    Specialty: {
-      id: string;
-      type: string;
-      select: {
-        id: string;
-        name: string;
-        color: string;
-      };
-    };
-    Tags: {
-      id: string;
-      type: string;
-      multi_select: {
-        id: string;
-        name: string;
-        color: string;
-      }[];
-    };
-    Valor_social: {
-      id: string;
-      checkbox: boolean;
-    };
-    Gratuitas: {
-      id: string;
-      checkbox: boolean;
-    };
-    Grat_quantity: {
-      id: string;
-      number: number;
-    };
-    Disasters: {
-      id: string;
-      checkbox: boolean;
-    };
-    Slug: { rich_text: { text: { content: string } }[] };
-    CRP: { rich_text: { text: { content: string } }[] };
-    CRM: { rich_text: { text: { content: string } }[] };
-    Avatar_url: { url: string };
-  };
-}
+import { IPartner } from "@/interfaces";
 
 const TestingHome = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [partners, setPartners] = useState<IPartiner[]>([]);
+  const [partners, setPartners] = useState<IPartner[]>([]);
   const [specialtyToFilter, setSpecialtyToFilter] = useState("");
   const [nameToFilter, setNameToFilter] = useState("");
   const [searchTriggered, setSearchTriggered] = useState(false);
@@ -112,7 +47,7 @@ const TestingHome = () => {
       });
   }, []);
 
-  function filterPartners(array: IPartiner[], specialty: string, name: string) {
+  function filterPartners(array: IPartner[], specialty: string, name: string) {
     const searchTermLowerCase = name.toLowerCase();
     const specialtyTermLowerCase = specialty.toLowerCase();
 
