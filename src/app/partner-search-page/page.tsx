@@ -1,20 +1,28 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import Pagination from "@/components/partner-search-page/Pagination";
+import PartnerCard from "@/components/partner-search-page/PartnerCard";
 import NameSearchInput from "@/components/partner-search-page/SearchInput";
 import SpecialtySelect from "@/components/partner-search-page/SpecialtySelect";
-import PartnerCard from "@/components/partner-search-page/PartnerCard";
-import Pagination from "@/components/partner-search-page/Pagination";
-import { BounceLoader } from "react-spinners";
 import { IPartner } from "@/interfaces";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { BounceLoader } from "react-spinners";
+import { useSearchParams, usePathname } from "next/navigation";
 
 const PartnerSearchPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartner[]>([]);
-  const [specialtyFilter, setSpecialtyFilter] = useState("");
-  const [nameFilter, setNameFilter] = useState("");
+  const [specialtyFilter, setSpecialtyFilter] = useState(
+    searchParams.get("specialty") || ""
+  );
+  const [nameFilter, setNameFilter] = useState(searchParams.get("name") || "");
   const [searchTriggered, setSearchTriggered] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page") || "1", 10)
+  );
   const itemsPerPage = 6;
 
   const specialtiesToFilter = useMemo(() => {
@@ -34,6 +42,11 @@ const PartnerSearchPage: React.FC = () => {
       .then((data) => {
         setPartners(data.partners);
         setIsLoading(false);
+
+        // Se houver parâmetros de busca na URL, dispara a busca automaticamente na primeira renderização
+        if (searchParams.get("specialty") || searchParams.get("name")) {
+          setSearchTriggered(true);
+        }
       })
       .catch((error) => {
         console.error("Erro ao obter os parceiros:", error);
@@ -74,16 +87,32 @@ const PartnerSearchPage: React.FC = () => {
 
   const handleSearch = () => {
     setSearchTriggered(true);
+
     setCurrentPage(1);
+    const params = new URLSearchParams(searchParams);
+    if (nameFilter) {
+      params.set("name", nameFilter);
+    }
+    if (specialtyFilter) {
+      params.set("specialty", specialtyFilter);
+    }
+    params.set("page", "1");
+    history.replaceState(null, "", `${pathname}?${params.toString()}`);
   };
 
-  const handlePageChange = useCallback((pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = useCallback(
+    (pageNumber: number) => {
+      setCurrentPage(pageNumber);
 
-    if (window.innerWidth < 768) {
-      window.scrollTo({ top: 300, behavior: "smooth" });
-    }
-  }, []);
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 300, behavior: "smooth" });
+      }
+      const params = new URLSearchParams(searchParams);
+      params.set("page", pageNumber.toString());
+      history.replaceState(null, "", `${pathname}?${params.toString()}`);
+    },
+    [pathname, searchParams]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -93,6 +122,16 @@ const PartnerSearchPage: React.FC = () => {
     },
     [handleSearch]
   );
+
+  const handleClearFilters = () => {
+    setSpecialtyFilter("");
+    setNameFilter("");
+    setSearchTriggered(false);
+    setCurrentPage(1);
+
+    const params = new URLSearchParams();
+    history.replaceState(null, "", `${pathname}`);
+  };
 
   const totalPages = Math.ceil(filteredPartners.length / itemsPerPage);
 
@@ -127,11 +166,7 @@ const PartnerSearchPage: React.FC = () => {
                 Buscar
               </button>
               <button
-                onClick={() => {
-                  setSpecialtyFilter("");
-                  setNameFilter("");
-                  setSearchTriggered(false);
-                }}
+                onClick={handleClearFilters}
                 className="w-full py-[8px] px-4 rounded-[2px] text-white"
               >
                 Limpar
