@@ -15,11 +15,11 @@ const PartnerSearchPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartner[]>([]);
+  const [displayedPartners, setDisplayedPartners] = useState<IPartner[]>([]); // Para armazenar os parceiros que serão exibidos
   const [specialtyFilter, setSpecialtyFilter] = useState(
     searchParams.get("specialty") || ""
   );
   const [nameFilter, setNameFilter] = useState(searchParams.get("name") || "");
-  const [searchTriggered, setSearchTriggered] = useState(false);
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page") || "1", 10)
   );
@@ -41,11 +41,11 @@ const PartnerSearchPage: React.FC = () => {
       })
       .then((data) => {
         setPartners(data.partners);
+        setDisplayedPartners(data.partners);
         setIsLoading(false);
 
-        // Se houver parâmetros de busca na URL, dispara a busca automaticamente na primeira renderização
         if (searchParams.get("specialty") || searchParams.get("name")) {
-          setSearchTriggered(true);
+          handleSearch();
         }
       })
       .catch((error) => {
@@ -73,22 +73,11 @@ const PartnerSearchPage: React.FC = () => {
     []
   );
 
-  const filteredPartners = useMemo(() => {
-    return searchTriggered
-      ? filterPartners(partners, specialtyFilter, nameFilter)
-      : partners;
-  }, [partners, specialtyFilter, nameFilter, searchTriggered, filterPartners]);
-
-  const currentPartners = useMemo(() => {
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    return filteredPartners.slice(indexOfFirstItem, indexOfLastItem);
-  }, [filteredPartners, currentPage, itemsPerPage]);
-
   const handleSearch = () => {
-    setSearchTriggered(true);
-
+    const filtered = filterPartners(partners, specialtyFilter, nameFilter);
+    setDisplayedPartners(filtered);
     setCurrentPage(1);
+
     const params = new URLSearchParams(searchParams);
     if (nameFilter) {
       params.set("name", nameFilter);
@@ -99,6 +88,12 @@ const PartnerSearchPage: React.FC = () => {
     params.set("page", "1");
     history.replaceState(null, "", `${pathname}?${params.toString()}`);
   };
+
+  const currentPartners = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    return displayedPartners.slice(indexOfFirstItem, indexOfLastItem);
+  }, [displayedPartners, currentPage, itemsPerPage]);
 
   const handlePageChange = useCallback(
     (pageNumber: number) => {
@@ -126,14 +121,14 @@ const PartnerSearchPage: React.FC = () => {
   const handleClearFilters = () => {
     setSpecialtyFilter("");
     setNameFilter("");
-    setSearchTriggered(false);
+    setDisplayedPartners(partners);
     setCurrentPage(1);
 
     const params = new URLSearchParams();
     history.replaceState(null, "", `${pathname}`);
   };
 
-  const totalPages = Math.ceil(filteredPartners.length / itemsPerPage);
+  const totalPages = Math.ceil(displayedPartners.length / itemsPerPage);
 
   return (
     <>
