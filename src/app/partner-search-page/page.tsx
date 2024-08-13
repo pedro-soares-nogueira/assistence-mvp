@@ -6,8 +6,9 @@ import NameSearchInput from "@/components/partner-search-page/SearchInput";
 import SpecialtySelect from "@/components/partner-search-page/SpecialtySelect";
 import { IPartner } from "@/interfaces";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BounceLoader } from "react-spinners";
 import { useSearchParams, usePathname } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const PartnerSearchPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -15,7 +16,7 @@ const PartnerSearchPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartner[]>([]);
-  const [displayedPartners, setDisplayedPartners] = useState<IPartner[]>([]); // Para armazenar os parceiros que serão exibidos
+  const [displayedPartners, setDisplayedPartners] = useState<IPartner[]>([]);
   const [specialtyFilter, setSpecialtyFilter] = useState(
     searchParams.get("specialty") || ""
   );
@@ -44,8 +45,10 @@ const PartnerSearchPage: React.FC = () => {
         setDisplayedPartners(data.partners);
         setIsLoading(false);
 
+        // Mantém a página da pesquisa que veio do URL
         if (searchParams.get("specialty") || searchParams.get("name")) {
-          handleSearch();
+          const pageFromParams = parseInt(searchParams.get("page") || "1", 10);
+          handleSearch(data.partners, pageFromParams);
         }
       })
       .catch((error) => {
@@ -73,10 +76,15 @@ const PartnerSearchPage: React.FC = () => {
     []
   );
 
-  const handleSearch = () => {
-    const filtered = filterPartners(partners, specialtyFilter, nameFilter);
+  const handleSearch = (partnersToFilter = partners, page = 1) => {
+    const filtered = filterPartners(
+      partnersToFilter,
+      specialtyFilter,
+      nameFilter
+    );
     setDisplayedPartners(filtered);
-    setCurrentPage(1);
+
+    setCurrentPage(page); // Define a página baseada na pesquisa
 
     const params = new URLSearchParams(searchParams);
     if (nameFilter) {
@@ -85,8 +93,12 @@ const PartnerSearchPage: React.FC = () => {
     if (specialtyFilter) {
       params.set("specialty", specialtyFilter);
     }
-    params.set("page", "1");
+    params.set("page", page.toString());
     history.replaceState(null, "", `${pathname}?${params.toString()}`);
+  };
+
+  const handleButtonClick = () => {
+    handleSearch();
   };
 
   const currentPartners = useMemo(() => {
@@ -155,7 +167,7 @@ const PartnerSearchPage: React.FC = () => {
             />
             <div className="flex gap-2 flex-col sm:flex-row md:col-span-6 lg:col-span-1">
               <button
-                onClick={handleSearch}
+                onClick={handleButtonClick}
                 className="w-full py-[8px] px-4 rounded-[2px] border border-white text-white "
               >
                 Buscar
@@ -181,18 +193,24 @@ const PartnerSearchPage: React.FC = () => {
 
       <section className="text-gray-600 body-font">
         <div className="sm:container px-5 mx-auto mt-[2rem] md:mt-20">
-          <BounceLoader
-            size={150}
-            loading={isLoading}
-            className="mx-auto mb-14"
-            color="#7E34D9"
-          />
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+              <Skeleton className="w-full h-[318px] bg-gray-500" />
+            </div>
+          )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {currentPartners.map((partner, index) => (
-              <PartnerCard key={index} partner={partner} />
-            ))}
-          </div>
+          {!isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {currentPartners.map((partner, index) => (
+                <PartnerCard key={index} partner={partner} />
+              ))}
+            </div>
+          )}
 
           <Pagination
             currentPage={currentPage}

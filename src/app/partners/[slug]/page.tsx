@@ -1,22 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
   FacebookLogo,
   InstagramLogo,
   WhatsappLogo,
-  Image as PImage,
   ArrowLeft,
   ShareNetwork,
   CheckCircle,
 } from "phosphor-react";
-import partnerBg from "@/assets/partner-backgorund.png";
 import { usePathname } from "next/navigation";
 import { RWebShare } from "react-web-share";
 import { BounceLoader } from "react-spinners";
 import { IPartner } from "@/interfaces";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const PartinerPage = ({ params }: { params: { slug: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,37 +60,45 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="relative">
-      <Image
-        alt=""
-        src={partnerBg}
-        className="w-full min-h-[24rem] absolute top-0 inset-x-0 -z-[9999]"
-      />
+      <div className="absolute top-0 inset-x-0 w-full flex items-center justify-between">
+        <div className="bg-[#7E34D9] max-w-[900px] w-full min-h-[8px]" />
+        <div className="bg-[#0074A6] max-w-[900px] w-full min-h-[8px]" />
+        <div className="bg-[#79A06E] max-w-[900px] w-full min-h-[8px]" />
+        <div className="bg-[#FFB101] max-w-[900px] w-full min-h-[8px]" />
+        <div className="bg-[#FF6001] max-w-[900px] w-full min-h-[8px]" />
+        <div className="bg-[#CF1616] max-w-[900px] w-full min-h-[8px]" />
+      </div>
+      <div className="bg-gradient-to-b from-[#222C60] to-[#1B1E27] min-h-[28rem] absolute top-0 inset-x-0 -z-[9999]"></div>
 
-      {partnerToShow !== undefined && (
-        <div className="container mx-auto px-4">
-          <div className="pt-8 pb-5 mb-10 border-b border-white flex items-center justify-between flex-col gap-4 xs:flex-row">
-            <Link href={"/"} className="flex gap-3 font-semibold">
-              <ArrowLeft size={20} weight="bold" />
-              Voltar
-            </Link>
+      <div className="container mx-auto px-4">
+        <div className="pt-8 pb-5 mb-10 border-b border-white flex items-center justify-between gap-4 flex-row">
+          <button
+            onClick={() => history.back()}
+            className="flex gap-3 font-semibold text-gray-100"
+          >
+            <ArrowLeft size={20} weight="bold" className="mt-[2px]" />
+            Voltar
+          </button>
 
-            <RWebShare
-              data={{
-                title: "",
-                text: "Pride Care - Portal de Saúde para a Comunidade LGBT+: Conheça nosso parceiro:",
-                url: `${partnerToShare}`,
-              }}
+          <RWebShare
+            data={{
+              title: "",
+              text: "Pride Care - Portal de Saúde para a Comunidade LGBT+: Conheça nosso parceiro:",
+              url: `${partnerToShare}`,
+            }}
+          >
+            <button
+              className="bg-transparent text-[#1E1E1E] p-[10px] rounded-[2px] 
+                            hover:opacity-80 focus:outline-none flex items-center justify-center gap-2 text-sm"
             >
-              <button className="bg-white border border-[#1E1E1E] text-[#1E1E1E] py-3 px-5 rounded-lg hover:opacity-80 focus:outline-none gap-4">
-                <span className="flex items-center justify-center gap-2 font-semibold text-sm">
-                  <ShareNetwork size={20} weight="bold" />
-                  Compartilhar perfil
-                </span>
-              </button>
-            </RWebShare>
-          </div>
+              <ShareNetwork size={18} weight="duotone" color="white" />
+              <span className="text-white hidden md:block">Compartilhar</span>
+            </button>
+          </RWebShare>
+        </div>
 
-          <div className="bg-white w-full rounded-[20px] p-5 md:p-24">
+        {partnerToShow !== undefined && (
+          <div className="bg-white w-full rounded-[10px] p-5 md:p-24">
             <div className="flex flex-col md:flex-row gap-[10px] items-center md:items-start md:gap-6">
               {partnerToShow.properties.Avatar_url.url !== null && (
                 <Image
@@ -99,7 +106,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                   src={partnerToShow.properties.Avatar_url.url}
                   width={200}
                   height={200}
-                  className="max-w-[110px] max-h-[110px] w-full h-full md:max-w-[200px] md:max-h-[200px] object-cover rounded-[10px]"
+                  className="max-w-[110px] max-h-[110px] w-full h-full md:max-w-[200px] md:max-h-[200px] object-cover rounded-[4px]"
                 />
               )}
 
@@ -128,14 +135,14 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
                 <div className="!mt-4 flex md:items-start md:justify-start gap-3 flex-col md:flex-row items-center justify-center">
                   {partnerToShow?.properties.Valor_social?.checkbox && (
-                    <span className="bg-gray-200 flex py-1 px-2 rounded-[4px] text-[11px] md:text-xs gap-1">
+                    <span className="bg-gray-200 flex py-1 px-2 rounded-[2px] text-[11px] md:text-xs gap-1">
                       <CheckCircle size={16} className="text-green-600" />
                       Vagas com preço social
                     </span>
                   )}
 
                   {partnerToShow.properties.Grat_quantity?.number !== null && (
-                    <span className="bg-gray-200 flex py-1 px-2 rounded-[4px] text-[11px] md:text-xs gap-1">
+                    <span className="bg-gray-200 flex py-1 px-2 rounded-[2px] text-[11px] md:text-xs gap-1">
                       <CheckCircle size={16} className="text-green-600" />
                       Vagas gratuitas - Total de{" "}
                       {partnerToShow.properties.Grat_quantity?.number === null
@@ -147,28 +154,34 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
                 <div className="flex items-center justify-center md:items-start md:justify-start gap-3 !mt-4 ">
                   {partnerToShow?.properties.Facebook.url && (
-                    <Link
+                    <a
                       href={partnerToShow?.properties.Facebook.url}
-                      className="bg-[#602DA0] rounded-[4px] p-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#222C60] rounded-[4px] p-1"
                     >
                       <FacebookLogo size={22} className="text-white" />
-                    </Link>
+                    </a>
                   )}
                   {partnerToShow?.properties.Instagram.url && (
-                    <Link
+                    <a
                       href={partnerToShow?.properties.Instagram.url}
-                      className="bg-[#602DA0] rounded-[4px] p-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#222C60] rounded-[2px] p-1"
                     >
                       <InstagramLogo size={22} className="text-white" />
-                    </Link>
+                    </a>
                   )}
                   {partnerToShow?.properties.Whatsapp.number && (
-                    <Link
+                    <a
                       href={linkWhatsApp}
-                      className="bg-[#602DA0] rounded-[4px] p-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#222C60] rounded-[2px] p-1"
                     >
                       <WhatsappLogo size={22} className="text-white" />
-                    </Link>
+                    </a>
                   )}
                 </div>
               </div>
@@ -180,7 +193,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                   return (
                     <p
                       key={item.id}
-                      className="text-gray-900 rounded-sm text-xs bg-red-200 py-1 px-2"
+                      className="text-gray-900 rounded-sm text-xs bg-[#e6c7ff] py-1 px-2"
                     >
                       {item.name}
                     </p>
@@ -193,29 +206,49 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
               </p>
 
               {partnerToShow?.properties.Whatsapp.number && (
-                <Link
+                <a
                   href={linkWhatsApp}
-                  className="bg-green-700 rounded-md px-5 py-[10px] text-white font-semibold mt-12 flex items-center justify-center gap-2 text-xs max-w-[22rem] w-full mx-auto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center text-center bg-green-700 font-bold 
+                            text-white rounded-[2px] py-[10px] px-[15px] text-sm mt-12 
+                              max-w-[22rem] w-full mx-auto"
                 >
                   <WhatsappLogo size={22} />
                   Entrar em contato pelo whatsapp
-                </Link>
+                </a>
               )}
             </div>
           </div>
-        </div>
-      )}
-
-      {partnerToShow === undefined && (
-        <div className="h-[80vh] pt-20">
-          <BounceLoader
-            size={150}
-            loading={isLoading}
-            className="mx-auto mb-14"
-            color="#ccc"
-          />
-        </div>
-      )}
+        )}
+        {partnerToShow === undefined && (
+          <div className="bg-white w-full rounded-[10px] p-5 md:p-24">
+            <div className="h-[50vh] grid grid-cols-1 md:grid-cols-5">
+              <div className="!w-[110px] h-[110px] md:!w-[200px] md:h-[200px] mx-auto md:mx-0 md:col-span-2 lg:col-span-1">
+                <Skeleton className="!w-[110px] h-[110px] md:!w-[200px] md:h-[200px] mx-auto md:mx-0" />
+              </div>
+              <div className="md:col-span-2 mx-6 md:mx-0 mt-4 md:mt-0">
+                <Skeleton className="h-[36px]" />
+                <Skeleton className="h-[16px]" />
+                <Skeleton className="h-[16px] !w-[80%]" />
+                <Skeleton className="h-[16px] !w-[50%]" />
+                <Skeleton className="h-[16px] !w-[30%]" />
+                <div className="hidden md:flex items-center justify-start gap-4">
+                  <Skeleton className="!w-[36px] h-[36px]" />
+                  <Skeleton className="!w-[36px] h-[36px]" />
+                </div>
+              </div>
+              <div className="md:col-span-2 md:hidden flex items-center justify-center gap-4">
+                <Skeleton className="!w-[36px] h-[36px]" />
+                <Skeleton className="!w-[36px] h-[36px]" />
+              </div>
+              <div className="md:col-span-5 mt-4 md:mt-0">
+                <Skeleton className="h-[200px]" />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
