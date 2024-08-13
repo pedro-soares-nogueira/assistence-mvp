@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { IPartiner } from "@/app/page";
 import {
   FacebookLogo,
   InstagramLogo,
@@ -17,10 +16,11 @@ import partnerBg from "@/assets/partner-backgorund.png";
 import { usePathname } from "next/navigation";
 import { RWebShare } from "react-web-share";
 import { BounceLoader } from "react-spinners";
+import { IPartner } from "@/interfaces";
 
 const PartinerPage = ({ params }: { params: { slug: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [partners, setPartners] = useState<IPartiner[]>([]);
+  const [partners, setPartners] = useState<IPartner[]>([]);
 
   const pathname = usePathname();
 
