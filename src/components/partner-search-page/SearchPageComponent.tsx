@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { IPartner } from "@/interfaces";
 import { usePathname, useSearchParams } from "next/navigation";
