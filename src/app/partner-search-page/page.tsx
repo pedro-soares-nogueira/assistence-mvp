@@ -17,14 +17,16 @@ const PartnerSearchPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [partners, setPartners] = useState<IPartner[]>([]);
   const [displayedPartners, setDisplayedPartners] = useState<IPartner[]>([]);
-  const [specialtyFilter, setSpecialtyFilter] = useState(
-    searchParams.get("specialty") || ""
-  );
-  const [nameFilter, setNameFilter] = useState(searchParams.get("name") || "");
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page") || "1", 10)
-  );
+  const [specialtyFilter, setSpecialtyFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  useEffect(() => {
+    setNameFilter(searchParams.get("name") || "");
+    setSpecialtyFilter(searchParams.get("specialty") || "");
+    setCurrentPage(parseInt(searchParams.get("page") || "1", 10));
+  }, [searchParams]);
 
   const specialtiesToFilter = useMemo(() => {
     return Array.from(
