@@ -1,18 +1,7 @@
-import SearchPageComponent from "@/components/partner-search-page/SearchPageComponent";
-import { Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const PartnerSearchPage: React.FC = () => {
-  return (
-    <Suspense fallback={<Loading />}>
-      <SearchPageComponent />
-    </Suspense>
-  );
-};
-export default PartnerSearchPage;
-
-const Loading = () => {
+export const Loading = () => {
   return (
     <>
       <section className="relative overflow-hidden bg-gradient-to-b from-[#222C60] to-[#1B1E27] min-h-[28rem] flex items-center justify-center text-center">
