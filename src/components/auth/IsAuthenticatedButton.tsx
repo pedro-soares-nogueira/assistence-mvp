@@ -1,3 +1,4 @@
+import { handleSignIn, handleSignOut } from "@/actions";
 import { auth, signIn, signOut } from "@/auth";
 
 export default async function IsAuthenticatedButton() {
@@ -5,12 +6,7 @@ export default async function IsAuthenticatedButton() {
 
   if (session?.user) {
     return (
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
+      <form action={handleSignOut}>
         <button
           type="submit"
           className="flex items-center justify-center text-center bg-red-600 font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
@@ -22,12 +18,7 @@ export default async function IsAuthenticatedButton() {
   }
 
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("google");
-      }}
-    >
+    <form action={handleSignIn}>
       <button
         type="submit"
         className="flex items-center justify-center text-center bg-green-600 font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
