@@ -3,6 +3,7 @@ import React from "react";
 import main_logo from "@/assets/logo.svg";
 import main_logo_new from "../assets/logo-pridecare-dark.svg";
 import Image from "next/image";
+import IsAuthenticatedButton from "./auth/IsAuthenticatedButton";
 
 const MainHeader = () => {
   return (
@@ -15,12 +16,16 @@ const MainHeader = () => {
           <Image alt="" src={main_logo_new} className="max-w-[145px] w-full" />
         </Link>
 
-        <Link
-          href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
-          className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
-        >
-          Quero aparecer aqui
-        </Link>
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
+            className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
+          >
+            Quero aparecer aqui
+          </Link>
+
+          {/* <IsAuthenticatedButton /> */}
+        </div>
       </div>
     </header>
   );
