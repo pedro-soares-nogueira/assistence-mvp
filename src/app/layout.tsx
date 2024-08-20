@@ -71,7 +71,9 @@ export default function RootLayout({
         />
 
         {/* Hotjar Tracking Code for Site 5055310 */}
-        <script
+        <Script
+          id="hotjar-script"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             (function(h,o,t,j,a,r){
@@ -85,6 +87,42 @@ export default function RootLayout({
           `,
           }}
         />
+
+        {/* Meta Pixel Code */}
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '356841944149440');
+            fbq('track', 'PageView');
+          `,
+          }}
+
+          /* 
+          TOKEN META
+
+          EAAFamyfZAE7cBO4vF6dIHCNETLeVUpbZB2HZBLRVFO11r1uKS4laAYmZA4xG1tesSOsZBPZA3YjEHaDXhHQary2pQYH5xUx8jXGUg8WZBEP0s2ne1708xVuL09EQpocT8gmVVdZAu5y6HR10fpvVehFogv1bwdMZCZCZBm4O6NUqZAujgvsDSJZAGfP8DDzdqX9HbGSWp5QZDZD
+          
+          */
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=356841944149440&ev=PageView&noscript=1"
+            alt="Meta Pixel"
+          />
+        </noscript>
 
         <MainHeader />
         {children}
