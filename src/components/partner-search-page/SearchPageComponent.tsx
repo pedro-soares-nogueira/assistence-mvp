@@ -32,6 +32,8 @@ const SearchPageComponent = () => {
   }, [partners]);
 
   useEffect(() => {
+    // ConversionApiPageView();
+
     fetch("api/get-partners")
       .then((response) => {
         if (!response.ok) {
