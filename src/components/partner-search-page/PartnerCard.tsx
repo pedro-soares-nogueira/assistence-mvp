@@ -79,7 +79,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
         <form action={handleSignIn} className="w-full">
           <button
             type="submit"
-            className="w-full flex items-center justify-center text-center bg-transparent font-bold text-[#222C60]  rounded-[2px] py-[10px] text-xs"
+            className="w-full flex items-center justify-center text-center bg-transparent font-bold text-[#222C60] border border-[#222C60] rounded-[2px] py-[10px] text-xs"
           >
             Logar com Google para ver mais
           </button>
