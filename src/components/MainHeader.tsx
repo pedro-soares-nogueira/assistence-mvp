@@ -17,14 +17,14 @@ const MainHeader = () => {
         </Link>
 
         <div className="flex items-center justify-center gap-4">
-          <Link
+          {/* <Link
             href={"https://forms.gle/rrPrRPPVMgubgbWCA"}
             className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
           >
             Quero aparecer aqui
-          </Link>
+          </Link> */}
 
-          {/* <IsAuthenticatedButton /> */}
+          <IsAuthenticatedButton />
         </div>
       </div>
     </header>

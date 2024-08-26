@@ -2,12 +2,16 @@ import React from "react";
 import Link from "next/link";
 import { Image as PImage } from "phosphor-react";
 import { IPartner } from "@/interfaces";
+import { useSession } from "next-auth/react";
+import { handleSignIn } from "@/actions";
 
 interface PartnerCardProps {
   partner: IPartner;
 }
 
 const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
+  const session = useSession();
+
   const slugToPartnerPage =
     partner.properties.Slug.rich_text.length !== 0
       ? partner.properties.Slug.rich_text[0].text.content
@@ -61,12 +65,26 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
           )}
         </div>
       </div>
-      <Link
-        href={`/partners/${slugToPartnerPage}`}
-        className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] text-xs"
-      >
-        Ver perfil completo
-      </Link>
+
+      {session.status === "authenticated" && (
+        <Link
+          href={`/partners/${slugToPartnerPage}`}
+          className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] text-xs"
+        >
+          Ver perfil completo
+        </Link>
+      )}
+
+      {session.status === "unauthenticated" && (
+        <form action={handleSignIn} className="w-full">
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center text-center bg-transparent font-bold text-[#222C60]  rounded-[2px] py-[10px] text-xs"
+          >
+            Logar com Google para ver mais
+          </button>
+        </form>
+      )}
     </div>
   );
 };

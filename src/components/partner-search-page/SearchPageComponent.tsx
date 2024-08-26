@@ -8,6 +8,7 @@ import SpecialtySelect from "./SpecialtySelect";
 import Skeleton from "react-loading-skeleton";
 import PartnerCard from "./PartnerCard";
 import Pagination from "./Pagination";
+import { SessionProvider, useSession } from "next-auth/react";
 
 const SearchPageComponent = () => {
   const searchParams = useSearchParams();

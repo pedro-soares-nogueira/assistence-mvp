@@ -9,7 +9,7 @@ export default async function IsAuthenticatedButton() {
       <form action={handleSignOut}>
         <button
           type="submit"
-          className="flex items-center justify-center text-center bg-red-600 font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
+          className="flex items-center justify-center text-center bg-transparent font-bold text-[#222C60] rounded-[2px] py-[10px] px-[15px] text-sm"
         >
           Sair
         </button>
@@ -21,7 +21,7 @@ export default async function IsAuthenticatedButton() {
     <form action={handleSignIn}>
       <button
         type="submit"
-        className="flex items-center justify-center text-center bg-green-600 font-bold text-white rounded-[2px] py-[10px] px-[15px] text-sm"
+        className="flex items-center justify-center text-center bg-transparent font-bold text-[#222C60] rounded-[2px] py-[10px] px-[15px] text-sm"
       >
         Entrar
       </button>
