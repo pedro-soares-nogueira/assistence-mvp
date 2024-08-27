@@ -15,6 +15,10 @@ import { RWebShare } from "react-web-share";
 import { IPartner } from "@/interfaces";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import WhatsappButton from "@/components/WhatsappButton";
+import { SessionProvider } from "next-auth/react";
+import SocialLinksButton from "@/components/SocialLinksButton";
+import toast, { Toaster } from "react-hot-toast";
 
 const PartinerPage = ({ params }: { params: { slug: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,8 +61,39 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
 
   const linkWhatsApp = `https://wa.me/${partnerNumberFormatted}?text=${messageToSend}`;
 
+  // useEffect(() => {
+  //   const toastId = toast.custom(
+  //     (t) => (
+  //       <div
+  //         className={`${
+  //           t.visible ? "animate-enter" : "animate-leave"
+  //         } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+  //       >
+  //         <div className="flex-1 w-0 p-4">Parece que você não está logado</div>
+  //         <div className="flex border-l border-gray-200">
+  //           <button
+  //             onClick={() => toast.dismiss(t.id)}
+  //             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center
+  //           justify-center text-lg font-medium text-indigo-600 hover:text-indigo-500
+  //           focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  //           >
+  //             x
+  //           </button>
+  //         </div>
+  //       </div>
+  //     ),
+  //     { duration: 8000 }
+  //   );
+
+  //   return () => {
+  //     toast.dismiss(toastId);
+  //   };
+  // }, []);
+
   return (
     <div className="relative">
+      <Toaster position="top-right" />
+
       <div className="absolute top-0 inset-x-0 w-full flex items-center justify-between">
         <div className="bg-[#7E34D9] max-w-[900px] w-full min-h-[8px]" />
         <div className="bg-[#0074A6] max-w-[900px] w-full min-h-[8px]" />
@@ -150,8 +185,14 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                     </span>
                   )}
                 </div>
+                <SessionProvider>
+                  <SocialLinksButton
+                    partnerToShow={partnerToShow}
+                    linkWhatsApp={linkWhatsApp}
+                  />
+                </SessionProvider>
 
-                <div className="flex items-center justify-center md:items-start md:justify-start gap-3 !mt-4 ">
+                {/* <div className="flex items-center justify-center md:items-start md:justify-start gap-3 !mt-4 ">
                   {partnerToShow?.properties.Facebook.url && (
                     <a
                       href={partnerToShow?.properties.Facebook.url}
@@ -182,7 +223,7 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
                       <WhatsappLogo size={22} className="text-white" />
                     </a>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -205,17 +246,9 @@ const PartinerPage = ({ params }: { params: { slug: string } }) => {
               </p>
 
               {partnerToShow?.properties.Whatsapp.number && (
-                <a
-                  href={linkWhatsApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center text-center bg-green-700 font-bold 
-                            text-white rounded-[2px] py-[10px] px-[15px] text-sm mt-12 
-                              max-w-[22rem] w-full mx-auto"
-                >
-                  <WhatsappLogo size={22} />
-                  Entrar em contato pelo whatsapp
-                </a>
+                <SessionProvider>
+                  <WhatsappButton linkWhatsApp={linkWhatsApp} />
+                </SessionProvider>
               )}
             </div>
           </div>

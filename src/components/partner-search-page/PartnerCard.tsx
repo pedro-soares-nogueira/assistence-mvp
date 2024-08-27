@@ -10,7 +10,7 @@ interface PartnerCardProps {
 }
 
 const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
-  const session = useSession();
+  // const session = useSession();
 
   const slugToPartnerPage =
     partner.properties.Slug.rich_text.length !== 0
@@ -66,16 +66,14 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
         </div>
       </div>
 
-      {session.status === "authenticated" && (
-        <Link
-          href={`/partners/${slugToPartnerPage}`}
-          className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] text-xs"
-        >
-          Ver perfil completo
-        </Link>
-      )}
+      <Link
+        href={`/partners/${slugToPartnerPage}`}
+        className="flex items-center justify-center text-center bg-[#222C60] font-bold text-white rounded-[2px] py-[10px] text-xs"
+      >
+        Ver perfil completo
+      </Link>
 
-      {session.status === "unauthenticated" && (
+      {/* {session.status === "unauthenticated" && (
         <form action={handleSignIn} className="w-full">
           <button
             type="submit"
@@ -84,7 +82,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner }) => {
             Logar com Google para ver mais
           </button>
         </form>
-      )}
+      )} */}
     </div>
   );
 };
