@@ -24,7 +24,7 @@ const MainHeader = () => {
             Quero aparecer aqui
           </Link> */}
 
-          <IsAuthenticatedButton />
+          {/* <IsAuthenticatedButton /> */}
         </div>
       </div>
     </header>
