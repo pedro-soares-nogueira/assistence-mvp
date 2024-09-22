@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.2",
+    "@hookform/resolvers": "^3.9.0",
     "@notion-render/bookmark-plugin": "^0.0.2",
     "@notion-render/client": "^0.0.2",
     "@notion-render/hljs-plugin": "^0.0.2",
@@ -23,11 +24,13 @@
     "phosphor-react": "^1.4.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "react-loading-skeleton": "^3.4.0",
     "react-notion-x": "^6.16.0",
     "react-spinners": "^0.13.8",
-    "react-web-share": "^2.0.2"
+    "react-web-share": "^2.0.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
