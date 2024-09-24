@@ -37,7 +37,7 @@ const WhatsappButton = ({ linkWhatsApp }: WhatsProps) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email }), // Incluímos o nome aqui
+          body: JSON.stringify({ name, email }),
         }
       );
 
@@ -64,6 +64,8 @@ const WhatsappButton = ({ linkWhatsApp }: WhatsProps) => {
   };
 
   const handleClick = () => {
+    localStorage.removeItem("email");
+
     const email = localStorage.getItem("email");
 
     if (!email) {
