@@ -1,26 +1,45 @@
+"use client";
+
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import MainFooter from "@/components/MainFooter";
 import MainHeader from "@/components/MainHeader";
+import { usePathname } from "next/navigation";
 
 const dmsans = DM_Sans({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Pride Care",
-  description: "Portal de Saúde para a Comunidade LGBT+",
-};
+// export const metadata: Metadata = {
+//   title: "Pride Care",
+//   description: "Portal de Saúde para a Comunidade LGBT+",
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/register")) {
+    return (
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+          <title>Pride Care - Saúde integral</title>
+        </head>
+
+        <body className={dmsans.className}>{children}</body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <title>Pride Care - Saúde integral</title>
       </head>
 
       <body className={dmsans.className}>

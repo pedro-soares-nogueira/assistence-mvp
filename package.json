@@ -19,6 +19,7 @@
     "@prisma/extension-accelerate": "^1.1.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
+    "bcryptjs": "^2.4.3",
     "next": "14.2.3",
     "next-auth": "^5.0.0-beta.20",
     "phosphor-react": "^1.4.1",
@@ -33,6 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
