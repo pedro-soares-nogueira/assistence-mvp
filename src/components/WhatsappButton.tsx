@@ -31,7 +31,7 @@ const WhatsappButton = ({ linkWhatsApp }: WhatsProps) => {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://transmuscle.com.br/api/register_email.php",
+        "https://transmuscle.com.br/api/register_user.php",
         {
           method: "POST",
           headers: {
