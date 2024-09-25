@@ -1,10 +1,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import { redirect } from "next/navigation";
+
+interface UserResponse {
+  email: string;
+  token: string;
+  message: string;
+}
 
 const userSchema = z
   .object({
@@ -25,6 +31,14 @@ type UserFormData = z.infer<typeof userSchema>;
 export default function Register() {
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("pridecare@user");
+
+    if (storedUser) {
+      redirect("/admin/dashboard");
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -32,6 +46,12 @@ export default function Register() {
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
   });
+
+  // TODO:
+  // Página inicia verificando se há objeto no local storage (OK)
+  // Se sim, verifica se o token é um token ainda válido
+  // Se sim, redireciona para "admin/dashboard" (OK)
+  // Se não, abre tela de registro normal (OK)
 
   const onSubmit = async (data: UserFormData) => {
     try {
@@ -54,8 +74,21 @@ export default function Register() {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Falha no cadastro");
+      if (response.ok) {
+        const result: UserResponse = await response.json();
+
+        localStorage.setItem(
+          "pridecare@user",
+          JSON.stringify({
+            email: result.email,
+            token: result.token,
+          })
+        );
+
+        redirect("/admin/dashboard");
+      } else {
+        const errorResult = await response.json();
+        console.error("Erro ao registrar:", errorResult.message);
       }
 
       console.log(userData);
