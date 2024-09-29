@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
 
-  if (pathname.startsWith("/register")) {
+  if (pathname.startsWith("/register") || pathname.startsWith("/login")) {
     return (
       <html lang="en">
         <head>

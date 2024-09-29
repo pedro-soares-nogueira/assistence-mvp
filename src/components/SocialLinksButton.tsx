@@ -57,10 +57,10 @@ const SocialLinksButton = ({
         const data = await response.json();
         console.log("Resposta do servidor:", data.message);
 
-        localStorage.setItem("email", email);
+        localStorage.setItem("pridecare@user", email);
         setShowModal(false);
 
-        window.open(selectedUrl, "_blank", "noopener,noreferrer");
+        window.open(selectedUrl, "_blank");
       } else {
         console.error("Erro ao salvar o e-mail");
       }
@@ -77,18 +77,22 @@ const SocialLinksButton = ({
 
   const handleClick = (url: string | undefined) => {
     localStorage.removeItem("email");
+    localStorage.removeItem("pridecare@user");
     setSelectedUrl(url);
 
-    const email = localStorage.getItem("email");
+    // TODO:
+    // Verificar validade token
 
-    if (!email) {
+    const user = localStorage.getItem("pridecare@user");
+
+    if (!user) {
       setShowModal(true);
     } else {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
-  console.log(partnerToShow.properties.Facebook.url);
+  console.log(partnerToShow.properties.Instagram.url);
 
   return (
     <>

@@ -14,19 +14,12 @@ interface UserResponse {
   message: string;
 }
 
-const userSchema = z
-  .object({
-    name: z.string().min(3, "Nome é obrigatório"),
-    email: z.string().email("Digite um e-mail válido."),
-    password: z
-      .string()
-      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-    confirmPassword: z.string().min(6, "A confirmação de senha é obrigatória"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem.",
-    path: ["confirmPassword"],
-  });
+const userSchema = z.object({
+  email: z.string().email("Digite um e-mail válido."),
+  password: z
+    .string()
+    .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
+});
 
 type UserFormData = z.infer<typeof userSchema>;
 
@@ -76,13 +69,12 @@ export default function Register() {
       setLoading(true);
 
       const userData = {
-        name: data.name,
         email: data.email,
         password: data.password,
       };
 
       const response = await fetch(
-        "https://transmuscle.com.br/api/register_user.php",
+        "https://transmuscle.com.br/api/login_user.php",
         {
           method: "POST",
           headers: {
@@ -121,28 +113,12 @@ export default function Register() {
   return (
     <div className="bg-gray-200 p-6 rounded-md max-w-sm w-full mx-4">
       <div className="flex items-center justify-between gap-4 mb-4">
-        <h2 className="text-xl font-bold">Pode entrar!</h2>
+        <h2 className="text-xl font-bold">Bem-vinde de volta!</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium">
-            Como quer ser chamado?*
-          </label>
-          <input
-            id="name"
-            type="text"
-            {...register("name")}
-            className="mt-1 p-2 w-full border border-gray-300 rounded"
-            disabled={loading}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
-
-        <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium">
-            Qual seu melhor email?*
+            Qual seu email?
           </label>
           <input
             id="email"
@@ -157,7 +133,7 @@ export default function Register() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">Senha*</label>
+          <label className="block text-sm font-medium">Senha</label>
           <input
             type="password"
             {...register("password")}
@@ -171,25 +147,11 @@ export default function Register() {
           )}
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Confirme a senha*</label>
-          <input
-            type="password"
-            {...register("confirmPassword")}
-            className="mt-1 p-2 w-full border border-gray-300 rounded"
-            disabled={loading}
-          />
-          {errors.confirmPassword && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
-
         <div className="flex items-end justify-between gap-2">
-          <Link href={"/login"} className="underline">
-            Já tenho cadastro
+          <Link href={"/register"} className="underline">
+            Ainda não tenho cadastro
           </Link>
+
           <button
             type="submit"
             className={`px-4 py-2 bg-green-700 text-white rounded ${

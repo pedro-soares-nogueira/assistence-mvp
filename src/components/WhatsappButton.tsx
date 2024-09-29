@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { diffInMinutes } from "@/utils";
 
 interface WhatsProps {
   linkWhatsApp: string;
@@ -44,8 +45,15 @@ const WhatsappButton = ({ linkWhatsApp }: WhatsProps) => {
       if (response.ok) {
         const data = await response.json();
         console.log("Resposta do servidor:", data.message);
+        console.log(data);
 
-        localStorage.setItem("email", email);
+        localStorage.setItem(
+          "pridecare@user",
+          JSON.stringify({
+            email: data.email,
+            createdAt: data.createdAt,
+          })
+        );
         setShowModal(false);
 
         window.open(linkWhatsApp, "_blank", "noopener,noreferrer");
@@ -64,14 +72,37 @@ const WhatsappButton = ({ linkWhatsApp }: WhatsProps) => {
   };
 
   const handleClick = () => {
-    localStorage.removeItem("email");
+    const user = localStorage.getItem("pridecare@user");
 
-    const email = localStorage.getItem("email");
-
-    if (!email) {
+    if (!user) {
       setShowModal(true);
     } else {
-      window.open(linkWhatsApp, "_blank", "noopener,noreferrer");
+      try {
+        const userObj = JSON.parse(user) as {
+          email: string;
+          createdAt: string;
+        };
+
+        if (!userObj.createdAt) {
+          throw new Error("Data de criação não encontrada.");
+        }
+
+        const createdAt = userObj.createdAt;
+        const minutesPassed = diffInMinutes(createdAt);
+
+        if (minutesPassed > 10) {
+          // Se passaram mais de 2 minutos, exibir o modal
+          setShowModal(true);
+          console.log("entrou aqui?");
+        } else {
+          // console.log("To whatsapp");
+          window.open(linkWhatsApp, "_blank", "noopener,noreferrer");
+        }
+      } catch (error) {
+        // Em caso de erro (ex: JSON inválido), exibir o modal
+        console.error("Erro ao processar o usuário armazenado:", error);
+        setShowModal(true);
+      }
     }
   };
 
