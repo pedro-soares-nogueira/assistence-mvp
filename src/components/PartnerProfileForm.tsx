@@ -130,7 +130,7 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
     };
 
     try {
-      const response = await fetch("/api/partners/create-profile", {
+      const response = await fetch(".../api/create-partner-profile.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

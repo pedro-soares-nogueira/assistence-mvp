@@ -1,12 +1,13 @@
 "use client";
 
 import PartnerProfileForm from "@/components/PartnerProfileForm";
+import { PartnerProfile } from "@/interfaces";
 import { diffInMinutes } from "@/utils";
 import { useRouter } from "next/navigation";
 import { X } from "phosphor-react";
 import React, { useEffect, useState } from "react";
 
-interface IPartner {
+interface IUser {
   id: string;
   name: string;
   email: string;
@@ -20,8 +21,9 @@ interface IPartner {
 // TODO:
 
 const Dashboard = () => {
-  const [partner, setPartner] = useState<IPartner>();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a exibição da modal
+  const [partner, setPartner] = useState<PartnerProfile>();
+  const [user, setUser] = useState<IUser>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -63,7 +65,8 @@ const Dashboard = () => {
               return response.json();
             })
             .then((data) => {
-              setPartner(data.partner);
+              setPartner(data.partner_profile);
+              setUser(data.user);
             })
             .catch((error) => {
               console.error("Erro ao obter os partners:", error);
@@ -84,7 +87,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto px-4 min-h-[82vh]">
       <h2 className="block text-3xl mb-4 heading-bold">
-        Dashboard, {partner?.name}
+        Dashboard, {user?.name}
       </h2>
 
       {/* Botão para abrir a modal */}
@@ -111,8 +114,8 @@ const Dashboard = () => {
             <PartnerProfileForm
               details={{
                 user_id: partner?.id ?? "",
-                fantasy_name: partner?.name ?? null,
-                prof_email: partner?.email ?? null,
+                fantasy_name: partner?.fantasy_name ?? null,
+                prof_email: partner?.prof_email ?? null,
                 bio: null,
                 avatar_url: partner?.avatar_url ?? null,
                 city_ibge_id: null,
