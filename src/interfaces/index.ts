@@ -63,3 +63,44 @@ export interface IPartner {
     Avatar_url: { url: string };
   };
 }
+
+export interface Specialty {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export interface PartnerProfile {
+  id: string;
+  user_id: string;
+  fantasy_name?: string | undefined;
+  prof_email?: string | undefined;
+  bio?: string | null;
+  avatar_url?: string | null;
+  city_ibge_id?: string | null;
+  tags?: string[] | null;
+  specialty_id?: string | null;
+  whatsapp?: string | undefined;
+  instagram?: string | undefined;
+  facebook?: string | undefined;
+  has_social_value?: boolean | null;
+  has_duty_free?: boolean | null;
+  duty_free_count?: number | null;
+  online?: boolean | null;
+  in_person?: boolean | null;
+  address?: string | null;
+  professional_registration?: string;
+  specialty?: Specialty | null;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password_hash: string;
+  slug: string;
+  avatar_url: string | null;
+  created_at: string;
+  partnerProfile: PartnerProfile[];
+  // role: string;
+}

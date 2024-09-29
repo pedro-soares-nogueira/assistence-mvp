@@ -9,7 +9,55 @@
   font-style: normal;
 }
 
+/* *,
+body {
+  font-family: "AloeveraDisplay";
+  font-weight: 400;
+} */
+
 .heading-bold {
   font-family: "AloeveraDisplay";
   font-weight: 700;
+}
+
+@layer components {
+  .accordionTrigger {
+    @apply;
+  }
+}
+
+@layer utilities {
+  input {
+    @apply px-4 py-2 block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 border;
+  }
+
+  .btn-save {
+    @apply bg-green-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none text-sm text-gray-800;
+  }
+
+  label {
+    @apply mb-1 block text-sm font-semibold text-gray-600;
+  }
+
+  .richTextBtn {
+    @apply w-10 h-10 flex items-center justify-center p-0 bg-white text-gray-600 hover:bg-gray-200;
+  }
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.css-13cymwt-control {
+  height: 42px !important;
+  border-color: #d1d5db !important;
+}
+
+.css-13cymwt-control::placeholder {
+  color: #d1d5db !important;
+}
+
+.PopoverArrow {
+  fill: #d1d5db;
+  margin-right: 11rem;
 }
