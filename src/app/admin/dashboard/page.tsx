@@ -19,6 +19,8 @@ interface IUser {
 }
 
 // TODO:
+// Cadastrar parceiro real (pela rota /register e configurar em admin/dashboard)
+// Configurar exibição de todos os parceiros em "/" (do banco de dados e do notion)
 
 const Dashboard = () => {
   const [partner, setPartner] = useState<PartnerProfile>();
@@ -84,6 +86,8 @@ const Dashboard = () => {
   // Função para fechar a modal
   const closeModal = () => setIsModalOpen(false);
 
+  console.log(partner?.has_social_value);
+
   return (
     <div className="container mx-auto px-4 min-h-[82vh]">
       <h2 className="block text-3xl mb-4 heading-bold">
@@ -113,24 +117,28 @@ const Dashboard = () => {
             {/* Conteúdo da modal: Formulário de edição */}
             <PartnerProfileForm
               details={{
-                user_id: partner?.id ?? "",
+                user_id: user?.id ?? "",
                 fantasy_name: partner?.fantasy_name ?? null,
                 prof_email: partner?.prof_email ?? null,
-                bio: null,
+                bio: partner?.bio ?? null,
                 avatar_url: partner?.avatar_url ?? null,
-                city_ibge_id: null,
-                tags: [],
-                specialty_id: null,
-                whatsapp: null,
-                instagram: null,
-                facebook: null,
-                has_social_value: false,
-                has_duty_free: false,
-                duty_free_count: null,
-                online: false,
-                in_person: false,
-                address: null,
-                professional_registration: null,
+                city_ibge_id: partner?.city_ibge_id ?? null,
+                // tags: partner?.tags ? JSON.parse(partner.tags) : [],
+                tags: partner?.tags ? JSON.parse(partner.tags as any) : [],
+                specialty_id: partner?.specialty_id ?? null,
+                whatsapp: partner?.whatsapp ?? null,
+                instagram: partner?.instagram ?? null,
+                facebook: partner?.facebook ?? null,
+                has_social_value: partner?.has_social_value ?? false,
+                has_duty_free: partner?.has_duty_free ?? false,
+                duty_free_count: partner?.duty_free_count
+                  ? partner.duty_free_count.toString()
+                  : null,
+                online: partner?.online ?? false,
+                in_person: partner?.in_person ?? false,
+                address: partner?.address ?? null,
+                professional_registration:
+                  partner?.professional_registration ?? null,
               }}
             />
           </div>

@@ -117,10 +117,11 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
     }
 
     const dataToCreate = {
+      user_id: details.user_id,
       specialty: selectedSpecialtyValue,
       tags: selectedTags,
       ibge_city_id: selectedCity?.toString(),
-      details_content: detailsContent,
+      bio: detailsContent,
       hasSocialValue,
       hasDutyFree,
       online,
@@ -130,19 +131,24 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
     };
 
     try {
-      const response = await fetch(".../api/create-partner-profile.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToCreate),
-      });
+      const response = await fetch(
+        "https://transmuscle.com.br/api/create-partner-profile.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToCreate),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const responseData = await response.json();
+
+      console.log(responseData);
     } catch (error) {
       console.error("Erro ao registrar parceiro:", error);
     }
