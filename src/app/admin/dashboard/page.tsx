@@ -1,15 +1,24 @@
 "use client";
 
 import { diffInMinutes } from "@/utils";
-import { redirect, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+
+interface IPartner {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+  ticket_code: string;
+  created_at: string;
+  updated_at: string;
+  password: string;
+}
 
 // TODO:
-// Verificar se há pridecare@user no localstorage
-// Se sim, renderiza dashobard (OK) - com senha
-// Se não, renderiza para login/register (OK)
 
 const Dashboard = () => {
+  const [partner, setPartner] = useState<IPartner>();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +42,25 @@ const Dashboard = () => {
           router.push("/login");
           console.log("Link expirado - Faça login novamente");
         } else {
-          // console.log("Redirecionando para o dashboard...");
+          fetch("https://transmuscle.com.br/api/get-logged-partner.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: userObj.email }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Erro ao obter os partners.");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              setPartner(data.partner);
+            })
+            .catch((error) => {
+              console.error("Erro ao obter os partners:", error);
+            });
         }
       } catch (error) {
         console.error("Erro ao processar o usuário armazenado:", error);
@@ -41,7 +68,11 @@ const Dashboard = () => {
     }
   }, []);
 
-  return <div className="container mx-auto px-4 h-[81vh]">Dashboard</div>;
+  return (
+    <div className="container mx-auto px-4 h-[81vh]">
+      Dashboard, {partner?.name}
+    </div>
+  );
 };
 
 export default Dashboard;
