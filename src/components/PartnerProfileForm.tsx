@@ -11,6 +11,8 @@ import CreatableSelectTags from "./partner-profile/CreatableSelectTags";
 import PartnerDetails from "./partner-profile/PartnerDetails";
 import AvatarUploader from "./design-components/AvatarUploder";
 import ToggleSwitch from "./design-components/ToggleSwitch";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PartnerProfileProps {
   details: {
@@ -40,7 +42,7 @@ const PartnerSchema = (hasDutyFree: boolean, inPerson: boolean) =>
   z.object({
     fantasy_name: z.string().min(3).nullable(),
     prof_email: z.string().min(3).nullable(),
-    whatsapp: z.string().min(6).nullable(),
+    whatsapp: z.string(),
     instagram: z.string().nullable(),
     facebook: z.string().nullable(),
     registration: z.string().min(4).nullable(),
@@ -48,6 +50,7 @@ const PartnerSchema = (hasDutyFree: boolean, inPerson: boolean) =>
       ? z.string().min(1)
       : z.string().nullable().optional(),
     address: inPerson ? z.string().min(1) : z.string().nullable().optional(),
+    specialtyValidation: z.string(),
   });
 
 type PartnerType = z.infer<ReturnType<typeof PartnerSchema>>;
@@ -78,13 +81,15 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
     register,
     handleSubmit,
     reset,
+    setValue,
+    setError,
     formState: { errors },
   } = useForm<PartnerType>({
     defaultValues: {
       fantasy_name: details.fantasy_name,
       prof_email: details.prof_email,
       registration: details.professional_registration,
-      whatsapp: details.whatsapp,
+      whatsapp: details.whatsapp ?? "",
       instagram: details.instagram,
       facebook: details.facebook,
       dutyFreeCount: details.duty_free_count,
@@ -98,8 +103,45 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
     reset({ address: inPerson ? undefined : null });
   }, [hasDutyFree, inPerson, reset]);
 
+  useEffect(() => {
+    if (details.whatsapp) {
+      handlePhoneChange({
+        target: { value: details.whatsapp },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  }, [details.whatsapp]);
+
   const onSubmit = async (data: PartnerType) => {
+    // Verifica o formato do telefone
+    const phoneRegex = /^\+55\(\d{2}\)\d{5}-\d{4}$/;
+
+    if (!phoneRegex.test(data.whatsapp!)) {
+      setError("whatsapp", {
+        message:
+          "Telefone é obrigatório e deve estar no formato +55(xx)xxxxx-xxxx",
+      });
+      return;
+    }
+
+    if (avatarFile === null) {
+      toast.error("O avatar também é obrigatório!", {
+        position: "top-right",
+      });
+      return;
+    }
+
+    console.log(selectedSpecialtyValue === "");
+    /*  if (selectedSpecialtyValue === "") {
+      setError("specialtyValidation", {
+        message: "Selecione uma especialidade",
+      });
+      console.log(errors);
+      return;
+    } */
+
     let avatarUrl = "";
+
+    // console.log(avatarFile);
 
     if (avatarFile != null) {
       fileFormData.append("file", avatarFile as Blob);
@@ -132,7 +174,7 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
 
     try {
       const response = await fetch(
-        "https://transmuscle.com.br/api/create-partner-profile.php",
+        "https://api-pridecare.com/api/create_partner_profile.php",
         {
           method: "POST",
           headers: {
@@ -148,18 +190,53 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
 
       const responseData = await response.json();
 
-      console.log(responseData);
+      toast.success(responseData.message, {
+        position: "top-right",
+      });
     } catch (error) {
       console.error("Erro ao registrar parceiro:", error);
     }
   };
 
   const handleUpload = (file: File) => {
+    if (!file) alert("Sem file");
     setAvatarFile(file);
+  };
+
+  const [formattedPhone, setFormattedPhone] = useState<string>(
+    () => details.whatsapp ?? ""
+  );
+
+  const handlePhoneChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    let phone = event.target.value.replace(/\D/g, "");
+
+    if (phone.startsWith("55")) {
+      phone = phone.slice(2);
+    }
+
+    let formatted = "+55";
+
+    if (phone.length > 2) {
+      formatted += `(${phone.substr(0, 2)})`;
+
+      if (phone.length > 7) {
+        formatted += `${phone.substr(2, 5)}-${phone.substr(7, 4)}`;
+      } else {
+        formatted += `${phone.substr(2)}`;
+      }
+    } else {
+      formatted += `(${phone}`;
+    }
+
+    setFormattedPhone(formatted);
+    setValue("whatsapp", formatted);
   };
 
   return (
     <div className="">
+      <ToastContainer />
       <h2 className="text-xl font-semibold">
         Atualize seu cadastro de parceiro
       </h2>
@@ -232,17 +309,19 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
             <div className="">
               <label htmlFor="whatsapp">Numero de whatsapp</label>
               <input
-                type="number"
+                type="text"
                 id="whatsapp"
-                {...register("whatsapp")}
+                value={formattedPhone}
+                onChange={handlePhoneChange}
+                // {...register("whatsapp")}
+                // placeholder="Seu melhor telefone"
                 placeholder="Digite seu whatsapp"
               />
               {errors.whatsapp && (
-                <p className="text-red-500 text-sm">Campo obrigatório</p>
+                <span className="text-red-500 text-sm font-light">
+                  {errors.whatsapp.message}
+                </span>
               )}
-              <small className="text-xs text-gray-800">
-                ddd+999999999 - Somente numeros
-              </small>
             </div>
 
             <div className="">

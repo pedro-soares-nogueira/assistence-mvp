@@ -74,7 +74,7 @@ export default function Register() {
       };
 
       const response = await fetch(
-        "https://transmuscle.com.br/api/login_user.php",
+        "https://api-pridecare.com/api/login_user.php",
         {
           method: "POST",
           headers: {

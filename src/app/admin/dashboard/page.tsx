@@ -53,7 +53,7 @@ const Dashboard = () => {
           router.push("/login");
           console.log("Link expirado - Faça login novamente");
         } else {
-          fetch("https://transmuscle.com.br/api/get-logged-partner.php", {
+          fetch("https://api-pridecare.com/api/get_logged_partner.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -86,8 +86,6 @@ const Dashboard = () => {
   // Função para fechar a modal
   const closeModal = () => setIsModalOpen(false);
 
-  console.log(partner?.has_social_value);
-
   return (
     <div className="container mx-auto px-4 min-h-[82vh]">
       <h2 className="block text-3xl mb-4 heading-bold">
@@ -95,17 +93,26 @@ const Dashboard = () => {
       </h2>
 
       {/* Botão para abrir a modal */}
-      <button
-        className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none text-sm text-gray-800"
-        onClick={openModal}
-      >
-        Editar perfil de parceiro
-      </button>
+      {partner ? (
+        <button
+          className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none text-sm text-gray-800"
+          onClick={openModal}
+        >
+          Editar perfil de parceiro
+        </button>
+      ) : (
+        <button
+          className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none text-sm text-gray-800"
+          onClick={openModal}
+        >
+          Criar perfil de parceiro
+        </button>
+      )}
 
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-7xl p-6 relative max-h-[80vh] overflow-y-auto">
+          <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative max-h-[80vh] overflow-y-auto">
             {/* Botão de fechar a modal */}
             <button
               className="absolute top-4 right-4 text-gray-700"

@@ -87,7 +87,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
 
           <label
             htmlFor="dropzone-file-update"
-            className="mt-4 max-w-40 w-full py-4 ml-4 text-center flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50"
+            className="mt-4 max-w-40 w-full py-2 ml-4 text-center font-light text-sm flex flex-col items-center justify-center border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50"
           >
             Editar imagem
             <input
@@ -110,6 +110,19 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
                   alt="Imagem Selecionada"
                   className="w-[12rem] h-[12rem] rounded-full object-cover"
                 />
+                <label
+                  htmlFor="dropzone-file-update"
+                  className="mt-4 max-w-40 w-full py-2 ml-4 text-center font-light text-sm flex flex-col items-center justify-center border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50"
+                >
+                  Editar imagem
+                  <input
+                    id="dropzone-file-update"
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </label>
               </>
             ) : (
               <>

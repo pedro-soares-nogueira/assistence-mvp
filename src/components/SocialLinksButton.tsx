@@ -43,7 +43,7 @@ const SocialLinksButton = ({
     try {
       setLoading(true);
       const response = await fetch(
-        "https://transmuscle.com.br/api/register_user.php",
+        "https://api-pridecare.com/api/register_user.php",
         {
           method: "POST",
           headers: {

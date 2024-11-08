@@ -23,7 +23,7 @@ const SelectSpecialyties = ({
   const fetchSpecialties = async () => {
     try {
       const response = await fetch(
-        "https://transmuscle.com.br/api/get_specialties.php"
+        "https://api-pridecare.com/api/get_specialties.php"
       );
       const data = await response.json();
 
