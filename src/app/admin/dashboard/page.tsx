@@ -6,6 +6,7 @@ import { diffInMinutes } from "@/utils";
 import { useRouter } from "next/navigation";
 import { X } from "phosphor-react";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 interface IUser {
   id: string;
@@ -51,7 +52,10 @@ const Dashboard = () => {
 
         if (minutesPassed > 2) {
           router.push("/login");
-          console.log("Link expirado - Faça login novamente");
+          toast.error("Link expirado - Faça login novamente.", {
+            theme: "colored",
+            position: "top-right",
+          });
         } else {
           fetch("https://api-pridecare.com/api/get_logged_partner.php", {
             method: "POST",
@@ -112,7 +116,7 @@ const Dashboard = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative max-h-[80vh] overflow-y-auto">
+          <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative max-h-[95vh] overflow-y-auto">
             {/* Botão de fechar a modal */}
             <button
               className="absolute top-4 right-4 text-gray-700"

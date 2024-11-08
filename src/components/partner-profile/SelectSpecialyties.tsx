@@ -49,7 +49,7 @@ const SelectSpecialyties = ({
     <>
       {isMounted && (
         <div className="mb-6">
-          <label htmlFor="">Selecione sua especialidade</label>
+          <label htmlFor="">Selecione sua especialidade*</label>
           <ReactSelect
             id={id}
             classNamePrefix="select"

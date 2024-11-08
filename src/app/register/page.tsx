@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { diffInMinutes } from "@/utils";
 import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
 
 interface UserResponse {
   email: string;
@@ -52,7 +53,10 @@ export default function Register() {
         const minutesPassed = diffInMinutes(createdAt);
 
         if (minutesPassed > 2) {
-          console.log("Link expirado - Faça login novamente");
+          toast.error("Link expirado - Faça login novamente.", {
+            theme: "colored",
+            position: "top-right",
+          });
         } else {
           console.log("Redirecionando para o dashboard...");
           router.push("/admin/dashboard");
@@ -120,6 +124,8 @@ export default function Register() {
 
   return (
     <div className="bg-gray-200 p-6 rounded-md max-w-sm w-full mx-4">
+      <ToastContainer />
+
       <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="text-xl font-bold">Pode entrar!</h2>
       </div>

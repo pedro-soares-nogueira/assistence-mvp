@@ -50,12 +50,13 @@ const PartnerSchema = (hasDutyFree: boolean, inPerson: boolean) =>
       ? z.string().min(1)
       : z.string().nullable().optional(),
     address: inPerson ? z.string().min(1) : z.string().nullable().optional(),
-    specialtyValidation: z.string(),
+    specialtyValidation: z.number().nullable().optional(),
   });
 
 type PartnerType = z.infer<ReturnType<typeof PartnerSchema>>;
 
 const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
+  const [loading, setLoading] = useState(false);
   const [selectedSpecialtyValue, setSelectedSpecialtyValue] = useState<
     string | null | undefined
   >();
@@ -123,26 +124,21 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
       return;
     }
 
-    if (avatarFile === null) {
+    if (avatarFile === null && !previousAvatarUrl) {
       toast.error("O avatar também é obrigatório!", {
+        theme: "colored",
         position: "top-right",
       });
       return;
     }
 
-    console.log(selectedSpecialtyValue === "");
-    /*  if (selectedSpecialtyValue === "") {
-      setError("specialtyValidation", {
-        message: "Selecione uma especialidade",
-      });
-      console.log(errors);
+    if (!selectedSpecialtyValue) {
+      setError("specialtyValidation", {});
       return;
-    } */
+    }
 
+    setLoading(true);
     let avatarUrl = "";
-
-    // console.log(avatarFile);
-
     if (avatarFile != null) {
       fileFormData.append("file", avatarFile as Blob);
       fileFormData.append("upload_preset", "pridecare");
@@ -191,8 +187,10 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
       const responseData = await response.json();
 
       toast.success(responseData.message, {
+        theme: "colored",
         position: "top-right",
       });
+      setLoading(false);
     } catch (error) {
       console.error("Erro ao registrar parceiro:", error);
     }
@@ -242,16 +240,17 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
       </h2>
 
       <form className="mt-10 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-7">
             <div>
               <AvatarUploader
                 onUpload={handleUpload}
                 previousAvatarUrl={previousAvatarUrl}
               />
             </div>
+
             <div className="">
-              <label htmlFor="fantasy_name">Qual seu nome fantasia?</label>
+              <label htmlFor="fantasy_name">Qual seu nome fantasia?*</label>
               <input
                 type="text"
                 id="fantasy_name"
@@ -267,7 +266,7 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
             </div>
 
             <div className="">
-              <label htmlFor="prof_email">Qual seu email institucional?</label>
+              <label htmlFor="prof_email">Qual seu email institucional?*</label>
               <input
                 type="text"
                 id="prof_email"
@@ -282,18 +281,51 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
               </small>
             </div>
 
-            <CitySelector
-              setSelectedCity={setSelectedCity}
-              inicialValue={details.city_ibge_id}
-              selectedCity={selectedCity}
-            />
-
             <SelectSpecialyties
               setSelectedSpecialtyValue={setSelectedSpecialtyValue}
               previousSpecialty={details.specialty_id ?? ""}
               selectedSpecialtyValue={selectedSpecialtyValue}
             />
+            {errors.specialtyValidation && (
+              <span className="text-red-500 text-sm font-light">
+                Campo obrigatório
+              </span>
+            )}
 
+            <div className="">
+              <label htmlFor="whatsapp">Numero de whatsapp/contato*</label>
+              <input
+                type="text"
+                id="whatsapp"
+                value={formattedPhone}
+                onChange={handlePhoneChange}
+                // {...register("whatsapp")}
+                // placeholder="Seu melhor telefone"
+                placeholder="Digite seu contato"
+              />
+              {errors.whatsapp && (
+                <span className="text-red-500 text-sm font-light">
+                  Campo obrigatório
+                </span>
+              )}
+            </div>
+
+            <div className="">
+              <label htmlFor="registration">
+                Qual seu numero de registro?*
+              </label>
+              <input
+                type="text"
+                id="registration"
+                {...register("registration")}
+                placeholder="Qual seu registro profissional?"
+              />
+              {errors.registration && (
+                <p className="text-red-500 text-sm">Campo obrigatório</p>
+              )}
+            </div>
+
+            <hr />
             <CreatableSelectTags
               setSelectedTags={setSelectedTags}
               content={selectedTags}
@@ -305,25 +337,7 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
             />
           </div>
 
-          <div className="space-y-6">
-            <div className="">
-              <label htmlFor="whatsapp">Numero de whatsapp</label>
-              <input
-                type="text"
-                id="whatsapp"
-                value={formattedPhone}
-                onChange={handlePhoneChange}
-                // {...register("whatsapp")}
-                // placeholder="Seu melhor telefone"
-                placeholder="Digite seu whatsapp"
-              />
-              {errors.whatsapp && (
-                <span className="text-red-500 text-sm font-light">
-                  {errors.whatsapp.message}
-                </span>
-              )}
-            </div>
-
+          <div className="space-y-7">
             <div className="">
               <label htmlFor="instagram">Qual LINK do seu instagram?</label>
               <input
@@ -356,19 +370,6 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
               </small>
             </div>
 
-            <div className="">
-              <label htmlFor="registration">Qual seu numero de registro?</label>
-              <input
-                type="text"
-                id="registration"
-                {...register("registration")}
-                placeholder="Qual seu registro profissional?"
-              />
-              {errors.registration && (
-                <p className="text-red-500 text-sm">Campo obrigatório</p>
-              )}
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
               <div className="space-y-3">
                 <label htmlFor="">Você oferece valor social?</label>
@@ -384,6 +385,21 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
                 </div>
               </div>
 
+              <div className="space-y-3">
+                <label htmlFor="registration">
+                  Oferece atendimento online?
+                </label>
+
+                <div className="flex items-center justify-start gap-2">
+                  <ToggleSwitch isChecked={online} onToggle={setOnline} />
+                  <span className="text-base text-gray-700">
+                    {online ? "Sim" : "Não"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-7 !mt-10">
               <div className="space-y-3">
                 <label htmlFor="">Você está oferencendo vagas gratuitas?</label>
 
@@ -423,22 +439,6 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
                   ""
                 )}
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
-              <div className="space-y-3">
-                <label htmlFor="registration">
-                  Oferece atendimento online?
-                </label>
-
-                <div className="flex items-center justify-start gap-2">
-                  <ToggleSwitch isChecked={online} onToggle={setOnline} />
-                  <span className="text-base text-gray-700">
-                    {online ? "Sim" : "Não"}
-                  </span>
-                </div>
-              </div>
-
               <div className="space-y-3">
                 <label htmlFor="registration">
                   Oferece atendimento presencial?
@@ -453,6 +453,11 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
 
                 {inPerson ? (
                   <>
+                    <CitySelector
+                      setSelectedCity={setSelectedCity}
+                      inicialValue={details.city_ibge_id}
+                      selectedCity={selectedCity}
+                    />
                     <div className="">
                       <label htmlFor="address">Qual endereço?</label>
                       <input
@@ -483,10 +488,12 @@ const PartnerProfileForm = ({ details }: PartnerProfileProps) => {
 
         <div className="w-full mb-[5rem]">
           <button
-            className="btn-save float-right"
+            className={`btn-save float-right ${
+              loading && "bg-opacity-20 cursor-not-allowed"
+            }`}
             onClick={handleSubmit(onSubmit)}
           >
-            Salvar
+            {loading ? "Carregando..." : "Salvar"}
           </button>
         </div>
       </form>
