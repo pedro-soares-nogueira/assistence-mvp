@@ -50,7 +50,7 @@ const Dashboard = () => {
         const createdAt = userObj.createdAt;
         const minutesPassed = diffInMinutes(createdAt);
 
-        if (minutesPassed > 2) {
+        if (minutesPassed > 10) {
           router.push("/login");
           toast.error("Link expirado - Faça login novamente.", {
             theme: "colored",
@@ -84,10 +84,8 @@ const Dashboard = () => {
     }
   }, [router]);
 
-  // Função para abrir a modal
   const openModal = () => setIsModalOpen(true);
 
-  // Função para fechar a modal
   const closeModal = () => setIsModalOpen(false);
 
   return (
@@ -96,7 +94,6 @@ const Dashboard = () => {
         Dashboard, {user?.name}
       </h2>
 
-      {/* Botão para abrir a modal */}
       {partner ? (
         <button
           className="bg-gray-200 inline-flex py-3 px-5 rounded-lg items-center hover:opacity-80 focus:outline-none text-sm text-gray-800"
@@ -113,11 +110,9 @@ const Dashboard = () => {
         </button>
       )}
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative max-h-[95vh] overflow-y-auto">
-            {/* Botão de fechar a modal */}
             <button
               className="absolute top-4 right-4 text-gray-700"
               onClick={closeModal}
@@ -125,7 +120,6 @@ const Dashboard = () => {
               <X size={22} weight="bold" />
             </button>
 
-            {/* Conteúdo da modal: Formulário de edição */}
             <PartnerProfileForm
               details={{
                 user_id: user?.id ?? "",
@@ -134,7 +128,6 @@ const Dashboard = () => {
                 bio: partner?.bio ?? null,
                 avatar_url: partner?.avatar_url ?? null,
                 city_ibge_id: partner?.city_ibge_id ?? null,
-                // tags: partner?.tags ? JSON.parse(partner.tags) : [],
                 tags: partner?.tags ? JSON.parse(partner.tags as any) : [],
                 specialty_id: partner?.specialty_id ?? null,
                 whatsapp: partner?.whatsapp ?? null,

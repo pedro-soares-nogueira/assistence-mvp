@@ -52,7 +52,7 @@ export default function Register() {
         const createdAt = userObj.createdAt;
         const minutesPassed = diffInMinutes(createdAt);
 
-        if (minutesPassed > 2) {
+        if (minutesPassed > 10) {
           toast.error("Link expirado - Faça login novamente.", {
             theme: "colored",
             position: "top-right",

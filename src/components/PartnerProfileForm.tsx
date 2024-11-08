@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { PartnerProfile } from "@/interfaces";
 import CitySelector from "./partner-profile/CitySelector";
 import SelectSpecialyties from "./partner-profile/SelectSpecialyties";
 import CreatableSelectTags from "./partner-profile/CreatableSelectTags";
